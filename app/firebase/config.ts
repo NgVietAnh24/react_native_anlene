@@ -2,21 +2,23 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDBVX3KWSer0UFcLI2UR2i7Ph7_K259Hyc",
-  authDomain: "anlene-6195b.firebaseapp.com",
-  databaseURL: "https://anlene-6195b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "anlene-6195b",
-  storageBucket: "anlene-6195b.firebasestorage.app",
-  messagingSenderId: "679191249159",
-  appId: "1:679191249159:web:852329e84ff1f6ce0f05a2",
-  measurementId: "G-17YMB28TYE"
+  apiKey: "AIzaSyAlif0HtxQps-q8-W-rYmhjOeYnX_wLqR0",
+  authDomain: "vietanh-38a14.firebaseapp.com",
+  databaseURL: "https://vietanh-38a14-default-rtdb.firebaseio.com",
+  projectId: "vietanh-38a14",
+  storageBucket: "vietanh-38a14.appspot.com",
+  messagingSenderId: "1051530777638",
+  appId: "1:1051530777638:web:1a2be265e02c4a576302e7",
+  measurementId: "G-SC8FDXQZKG"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const database = getDatabase(app); // Initialize Realtime Database
+const database = getDatabase(app);
+const storage = getStorage(app);
 
-export { app, database }; 
+export { app, database, storage }; 

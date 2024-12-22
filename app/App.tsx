@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { database } from './firebase/config'; // Import database from config
-import { ref, set, get, onValue, remove } from "firebase/database"; // Import Realtime Database functions
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { database } from './firebase/config';
+import { ref, set, get, onValue, remove } from "firebase/database";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from './firebase/config';
 
 const App: React.FC = () => {
-  const userId: string = '123'; // Example user ID
+  const userId: string = 'Nguyen Van A'; // Example user ID
+  const [imageFile, setImageFile] = useState<File | null>(null); // State to hold the image file
+
+  // Function to handle image selection (you can replace this with your image picker logic)
+  const handleImageSelection = (file: File) => {
+    setImageFile(file);
+  };
+
+  async function uploadImage() {
+    if (!imageFile) {
+      console.error('No image file selected');
+      return;
+    }
+
+    const storageReference = storageRef(storage, `images_anlene/${imageFile.name}`); // Create a reference to the storage location
+
+    try {
+      // Upload the file
+      const snapshot = await uploadBytes(storageReference, imageFile);
+      console.log('Uploaded a blob or file!', snapshot);
+
+      // Get the download URL
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('File available at', downloadURL);
+      return downloadURL; // Return the download URL
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  }
 
   // Function to write data to the database
   const writeUserData = () => {
@@ -54,6 +84,12 @@ const App: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
+      <TextInput
+        placeholder="Enter image file name"
+        onChangeText={(text) => handleImageSelection(new File([], text))} // Replace with actual file selection logic
+        style={styles.input}
+      />
+      <Button title="Upload Image" onPress={uploadImage} />
       <Button title="Write User Data" onPress={writeUserData} />
       <Button title="Read User Data" onPress={readUserData} />
       <Button title="Listen for Changes" onPress={listenForChanges} />
@@ -69,6 +105,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    width: '80%',
+    paddingHorizontal: 10,
   },
 });
 
