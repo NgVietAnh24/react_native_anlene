@@ -3,9 +3,19 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const ExerciseScreen: React.FC = () => {
+export type RootStackParamList = {
+    Check: undefined;
+};
+
+const Check: React.FC = () => {
+
     return (
-        <LinearGradient style={styles.container} colors={['#e0f7fa', '#80deea']}>
+        <LinearGradient
+            style={styles.container}
+            colors={['rgba(14, 71, 14, 1)', 'rgb(68, 153, 45)', 'rgb(80, 164, 47)', 'rgba(19, 80, 14, 1)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+        >
             <View style={styles.header}>
                 <TextTitle title='Trang 2/6' />
                 <Text style={styles.headerTitle}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
@@ -143,4 +153,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ExerciseScreen;
+export default Check;

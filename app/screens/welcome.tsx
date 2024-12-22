@@ -5,12 +5,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 import BtnSubmit from '../components/Button/btnSubmit';
 import TextTitle from '../components/Text/textTitle';
+import { useNavigation } from '@react-navigation/native';
 
-const App: React.FC = () => {
+const Welcome: React.FC = () => {
 
-    const handlePress = () => {
-        console.log('Button pressed!');
-    };
+    const navigation = useNavigation();
 
     return (
         <>
@@ -81,7 +80,7 @@ const App: React.FC = () => {
                     trọn vẹn niềm vui.</Text>
 
                 <View style={{ top: '45%', alignItems: 'center' }}>
-                    <BtnSubmit title='KIỂM TRA NGAY' onPress={handlePress} width={230} height={46} radius={30.24} border='#FFC200' color='#B70002' />
+                    <BtnSubmit title='KIỂM TRA NGAY' onPress={() => navigation.navigate('Check')} width={230} height={46} radius={30.24} border='#FFC200' color='#B70002' />
 
                     <View style={styles.grLogo}>
                         <Image source={require('../assets/free-logo.png')} />
@@ -157,4 +156,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default App;
+export default Welcome;
