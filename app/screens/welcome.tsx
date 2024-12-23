@@ -29,7 +29,7 @@ const Welcome: React.FC = () => {
                     style={styles.box2}
                 />
                 <View style={styles.grTitleLogo}>
-                    <TextTitle title='Trang 1/6' />
+                    <TextTitle title='Trang 1/6' paddingLeft={60} />
                     <Image
                         source={require('../assets/text-logo.png')}
                         style={{ justifyContent: 'flex-end' }}

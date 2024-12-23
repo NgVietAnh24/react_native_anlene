@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
+import BtnSubmit from '../components/Button/btnSubmit';
 
-export type RootStackParamList = {
-    Check: undefined;
-};
 
 const Check: React.FC = () => {
+    const navigation = useNavigation();
 
     return (
         <LinearGradient
@@ -17,42 +18,72 @@ const Check: React.FC = () => {
             end={{ x: 1, y: 1 }}
         >
             <View style={styles.header}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
+                    <Image source={require('../assets/icon-back.png')} />
+                </TouchableOpacity>
                 <TextTitle title='Trang 2/6' />
-                <Text style={styles.headerTitle}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
-                <TouchableOpacity style={styles.homeButton} activeOpacity={0.7}>
-                    <Text style={styles.homeButtonText}>{'🏠'}</Text>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
+                    <Image source={require('../assets/icon-home.png')} />
                 </TouchableOpacity>
             </View>
+
+            <Text style={styles.headerTitle}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
+
             <View style={styles.progressContainer}>
                 {[1, 2, 3, 4].map((item, index) => (
-                    <React.Fragment key={item}>
+                    <View key={item} style={styles.progressItem}>
                         <View style={styles.progressCircle}>
                             <Text style={styles.progressCircleText}>{item}</Text>
                         </View>
                         {index < 3 && <View style={styles.progressLine} />}
-                    </React.Fragment>
+                        <Text style={styles.progressLabel}>
+                            {index === 0 ? 'Cơ' : index === 1 ? 'Xương' : index === 2 ? 'Khớp' : 'Đề kháng'}
+                        </Text>
+                    </View>
                 ))}
             </View>
-            <View style={styles.progressLabels}>
-                <Text style={styles.progressLabel}>Cơ</Text>
-                <Text style={styles.progressLabel}>Xương</Text>
-                <Text style={styles.progressLabel}>Khớp</Text>
-                <Text style={styles.progressLabel}>Để kháng</Text>
-            </View>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>KIỂM TRA CƠ</Text>
-            </View>
+
+            <Svg height="40" width="319" viewBox="0 0 319 84">
+                <Defs>
+                    <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                        <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                        <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                        <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                    </SvgLinearGradient>
+                </Defs>
+                <SvgText
+                    fill="url(#gradientText)"
+                    fontSize="40"
+                    fontWeight="700"
+                    x="25%"
+                    y="48"
+                    textAnchor="middle"
+                >
+                    KIỂM TRA CƠ
+                </SvgText>
+            </Svg>
+
             <View style={styles.exerciseContainer}>
                 <Image source={require('../assets/bai1.png')} style={styles.exerciseImage} />
+                <Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />
             </View>
-            <View style={styles.exerciseDescriptionContainer}>
-                <Text style={styles.exerciseDescription}>
-                    Đây là mô tả về bài tập kiểm tra cơ. Bạn có thể thực hiện các động tác này để đánh giá tình trạng cơ của mình.
-                </Text>
+            <Text style={styles.exerciseDescription}>
+                Thẳng lưng trước ghế, đứng lên
+                ngồi xuống 5 lần từ 6-10 giây
+            </Text>
+            <View style={{ flexDirection: 'row', bottom: 10 }}>
+                <TouchableOpacity style={styles.btnResultContainer}>
+                    <Image source={require('../assets/icon-yes.png')} />
+                    <Text style={styles.textResult}>Được</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btnResultContainer}>
+                    <Image source={require('../assets/icon-no.png')} />
+                    <Text style={styles.textResult}>Không được</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.startButton} activeOpacity={0.7}>
-                <Text style={styles.startButtonText}>Bắt đầu</Text>
-            </TouchableOpacity>
+            <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' onPress={() => navigation.navigate('')} />
+            <Text style={styles.textNote}>*Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.</Text>
         </LinearGradient>
     );
 };
@@ -64,33 +95,61 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
+        alignContent: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 20,
+        textAlign: 'center',
+        marginBottom: 18,
         paddingHorizontal: 20,
     },
     headerTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#007BFF',
-    },
-    homeButton: {
-        padding: 10,
+        fontSize: 16,
+        fontWeight: '700',
+        lineHeight: 16,
+        color: '#FFF',
+        padding: 5,
     },
     homeButtonText: {
         fontSize: 24,
     },
     progressContainer: {
+        width: 327,
+        height: 82,
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderRadius: 12,
+        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+        paddingHorizontal: 10,
+        paddingTop: 10,
+    },
+    progressItem: {
+        top: 5,
         alignItems: 'center',
-        marginBottom: 20,
+        flex: 1,
+    },
+    progressLabel: {
+        fontSize: 12,
+        lineHeight: 14,
+        textAlign: 'center',
+        color: '#FFF',
+        marginTop: 5,
+    },
+    progressLine: {
+        width: '60%',
+        borderColor: '#FFF',
+        borderStyle: 'dashed',
+        borderWidth: 1.1,
+        position: 'absolute',
+        top: '20%',
+        left: '70%',
     },
     progressCircle: {
         width: 30,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#007BFF',
+        borderColor: '#FFF',
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -98,48 +157,41 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
     },
-    progressLine: {
-        height: 2,
-        flex: 1,
-        backgroundColor: '#007BFF',
-    },
     progressLabels: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 20,
         paddingHorizontal: 20,
     },
-    progressLabel: {
-        fontSize: 14,
-        textAlign: 'center',
-        color: '#555',
-    },
-    titleContainer: {
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: '#333',
-    },
     exerciseContainer: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 5,
     },
     exerciseImage: {
-        width: '100%',
-        height: 200,
+        width: 327,
+        height: 317,
         resizeMode: 'cover',
         borderRadius: 10,
+        borderColor: '#73A442',
+        borderWidth: 3,
     },
-    exerciseDescriptionContainer: {
-        marginBottom: 20,
-        paddingHorizontal: 20,
+    exerciseIcon: {
+        position: 'absolute',
+        right: '-3%',
+        top: '-5%',
     },
     exerciseDescription: {
-        fontSize: 16,
+        width: '80%',
+        fontSize: 15,
+        lineHeight: 20.18,
+        fontWeight: '500',
         textAlign: 'center',
-        color: '#666',
+        color: '#FFF',
+        shadowColor: '#000', // Màu sắc của bóng đổ
+        shadowOffset: { width: 0, height: 4 }, // Độ lệch của bóng đổ
+        shadowOpacity: 0.25, // Độ mờ của bóng đổ
+        shadowRadius: 7, // Độ mờ của bóng đổ
+        elevation: 9, // Chỉ áp dụng cho Android
     },
     startButton: {
         backgroundColor: '#28a745',
@@ -151,6 +203,32 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
     },
+    btnResultContainer: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90,
+        height: 90,
+        backgroundColor: '#71A162',
+        borderRadius: 10.29,
+        margin: 10,
+    },
+    textResult: {
+        fontSize: 12,
+        lineHeight: 16,
+        color: '#FFF',
+        fontWeight: '700',
+        textAlign: 'center',
+        top: 5,
+    },
+    textNote: {
+        fontSize: 10,
+        fontWeight: '400',
+        lineHeight: 13,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        color: '#FFF',
+    }
 });
 
 export default Check;
