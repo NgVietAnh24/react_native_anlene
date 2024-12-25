@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Animated, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,49 @@ import BtnSubmit from '../components/Button/btnSubmit';
 
 const Check: React.FC = () => {
     const navigation = useNavigation();
+    const [isImageVisible, setIsImageVisible] = useState(false);
+    const [isBorderVisible, setIsBorderVisible] = useState(0);
+    const [isColorVisible, setIsColorVisible] = useState('');
+    const [isValue, setIsValue] = useState(0);
+    const translateX = useRef(new Animated.Value(0)).current;
+
+    const isYes = () => {
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#73A442');
+        Animated.timing(translateX, {
+            toValue: isValue + 342, // Di chuyển sang trái 300px
+            duration: 600, // Thời gian di chuyển
+            useNativeDriver: true, // Sử dụng native driver để tăng hiệu suất
+        }).start();
+    }
+
+    const isNo = () => {
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#C6463A');
+        Animated.timing(translateX, {
+            toValue: 0, // Trở về vị trí ban đầu
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    }
+
+
+
+    const moveToNextScreen = () => {
+        Animated.timing(translateX, {
+            toValue: -300, // Di chuyển sang trái 300px
+            duration: 500, // Thời gian di chuyển
+            useNativeDriver: true, // Sử dụng native driver để tăng hiệu suất
+        }).start();
+    };
+
+    const moveToPreviousScreen = () => {
+        Animated.timing(translateX, {
+            toValue: 0, // Trở về vị trí ban đầu
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
 
     return (
         <LinearGradient
@@ -64,20 +107,38 @@ const Check: React.FC = () => {
                 </SvgText>
             </Svg>
 
-            <View style={styles.exerciseContainer}>
-                <Image source={require('../assets/bai1.png')} style={styles.exerciseImage} />
-                <Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />
-            </View>
+            <Animated.View
+                style={[
+                    styles.exerciseContainer,
+                    { transform: [{ translateX }] },
+                ]}
+            >
+                <Image source={require('../assets/bai1.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+
+                <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+
+                <Image source={require('../assets/bai3.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+
+                <Image source={require('../assets/bai4.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+            </Animated.View>
             <Text style={styles.exerciseDescription}>
                 Thẳng lưng trước ghế, đứng lên
                 ngồi xuống 5 lần từ 6-10 giây
             </Text>
             <View style={{ flexDirection: 'row', bottom: 10 }}>
-                <TouchableOpacity style={styles.btnResultContainer}>
+                <TouchableOpacity style={styles.btnResultContainer} onPress={() => isYes()}>
                     <Image source={require('../assets/icon-yes.png')} />
                     <Text style={styles.textResult}>Được</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnResultContainer}>
+                <TouchableOpacity style={styles.btnResultContainer} onPress={() => moveToPreviousScreen()}>
                     <Image source={require('../assets/icon-no.png')} />
                     <Text style={styles.textResult}>Không được</Text>
                 </TouchableOpacity>
@@ -166,14 +227,15 @@ const styles = StyleSheet.create({
     exerciseContainer: {
         alignItems: 'center',
         marginBottom: 5,
+        marginLeft: '94%',
+        flexDirection: 'row'
     },
     exerciseImage: {
         width: 327,
         height: 317,
         resizeMode: 'cover',
         borderRadius: 10,
-        borderColor: '#73A442',
-        borderWidth: 3,
+        marginLeft: '70%',
     },
     exerciseIcon: {
         position: 'absolute',
