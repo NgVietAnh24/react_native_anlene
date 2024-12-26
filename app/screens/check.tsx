@@ -143,7 +143,7 @@ const Check: React.FC = () => {
                     <Text style={styles.textResult}>Không được</Text>
                 </TouchableOpacity>
             </View>
-            <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' onPress={() => navigation.navigate('')} />
+            <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' onPress={() => navigation.navigate('UserInfo')} />
             <Text style={styles.textNote}>*Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.</Text>
         </LinearGradient>
     );

@@ -9,7 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './screens/welcome';
 import Check from './screens/check';
+import UserInfo from './screens/user-info';
 import { RootStackParamList } from './types/type';
+import ProInfo from './screens/pro-info';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,6 +21,8 @@ const App: React.FC = () => {
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="Check" component={Check} options={{ headerShown: false }} />
+        <Stack.Screen name="UserInfo" component={UserInfo} options={{ headerShown: false }} />
+        <Stack.Screen name="ProInfo" component={ProInfo} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

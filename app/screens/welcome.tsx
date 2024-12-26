@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
                     <TextTitle title='Trang 1/6' paddingLeft={60} />
                     <Image
                         source={require('../assets/text-logo.png')}
-                        style={{ justifyContent: 'flex-end' }}
+                        style={{ justifyContent: 'flex-end', width: 60, height: 16 }}
                     />
                 </View>
                 <Svg height="100" width="319" viewBox="0 0 319 84">
