@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 interface BtnSubmitProps {
     title: string;
+    textColor?: string;
     onPress: () => void;
     height?: number;
     width?: number;
@@ -18,6 +19,7 @@ interface BtnSubmitProps {
 
 const BtnSubmit: React.FC<BtnSubmitProps> = ({
     title,
+    textColor = '#FFF',
     onPress,
     height = 50,
     width = 200,
@@ -50,7 +52,7 @@ const BtnSubmit: React.FC<BtnSubmitProps> = ({
             ]}
             onPress={onPress}
         >
-            <Text style={styles.buttonText}>{title}</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
         </TouchableOpacity>
     );
 }

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Animated, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -8,12 +8,30 @@ import BtnSubmit from '../components/Button/btnSubmit';
 import TextInputUser from '../components/TextInput/textInputUser';
 import { CheckBox } from 'react-native-elements';
 
-
 const UserInfo: React.FC = () => {
     const navigation = useNavigation();
 
     const [checked, setChecked] = useState(false);
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
+    const [error1, setError1] = useState('');
 
+    const submit = () => {
+        if (name.length === 0) {
+            setError('Vui lòng nhập họ và tên');
+            return;
+        }
+        if (phone.length === 0) {
+            setError1('Vui lòng nhập số điện thoại');
+            return;
+        }
+        setName('');
+        setPhone('');
+        setEmail('');
+        navigation.navigate('ProInfo');
+    }
 
     return (
         <LinearGradient
@@ -57,19 +75,19 @@ const UserInfo: React.FC = () => {
                 </SvgText>
             </Svg>
 
-
             <Text style={styles.exerciseDescription}>
                 Bạn có hệ Cơ-Xương-Khớp linh hoạt và có vẻ sức đề kháng của bạn cũng tốt.
             </Text>
             <Text style={styles.exerciseDescriptionInfo}>
-                Điền thông tin bên dưới để xem đầy đủ
-                kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
+                Điền thông tin bên dưới để xem đầy đủ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
             </Text>
 
             <View>
-                <TextInputUser title='Họ tên:*' placeholeder='Nhập họ và tên' value='' keyBoardType='default' onChangeText={() => ''} />
-                <TextInputUser title='Số điện thoại:*' placeholeder='Nhập số điện thoại' value='' keyBoardType='numeric' onChangeText={() => ''} />
-                <TextInputUser title='Email:' placeholeder='Nhập email' value='' keyBoardType='email-address' onChangeText={() => ''} />
+                <TextInputUser title='Họ tên:*' placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
+                {name.length > 0 ? <Text></Text> : <Text style={styles.error}>{error}</Text>}
+                <TextInputUser title='Số điện thoại:*' placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
+                {name.length > 0 ? <Text></Text> : <Text style={styles.error}>{error1}</Text>}
+                <TextInputUser title='Email:' placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
             </View>
             <View style={{ marginBottom: '40%' }}>
                 <View style={styles.checkBoxContainer}>
@@ -85,7 +103,7 @@ const UserInfo: React.FC = () => {
                 </View>
             </View>
 
-            <BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} color='#B8B8B8' onPress={() => navigation.navigate('ProInfo')} />
+            <BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} color='#B8B8B8' onPress={submit} />
 
         </LinearGradient>
     );
@@ -98,6 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
+        top: '5%',
         alignContent: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -105,6 +124,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 18,
         paddingHorizontal: 20,
+        position: 'absolute',
     },
     headerTitle: {
         width: 235,
@@ -116,146 +136,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
     },
-    homeButtonText: {
-        fontSize: 24,
-    },
-    progressContainer: {
-        width: 327,
-        height: 82,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderRadius: 12,
-        backgroundColor: 'rgba(255, 255, 255, 0.15)',
-        paddingHorizontal: 10,
-        paddingTop: 10,
-    },
-    progressItem: {
-        top: 5,
-        alignItems: 'center',
-        flex: 1,
-    },
-    progressLabel: {
-        fontSize: 12,
-        lineHeight: 14,
-        textAlign: 'center',
-        color: '#FFF',
-        marginTop: 5,
-    },
-    progressLine: {
-        width: '60%',
-        borderColor: '#FFF',
-        borderStyle: 'dashed',
-        borderWidth: 1.1,
-        position: 'absolute',
-        top: '20%',
-        left: '70%',
-    },
-    progressCircle: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        borderColor: '#FFF',
-        borderWidth: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    progressCircleText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    progressLabels: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        paddingHorizontal: 20,
-    },
-    exerciseContainer: {
-        alignItems: 'center',
-        marginBottom: 5,
-        marginLeft: '94%',
-        flexDirection: 'row'
-    },
-    exerciseImage: {
-        width: 327,
-        height: 317,
-        resizeMode: 'cover',
-        borderRadius: 10,
-        marginLeft: '70%',
-    },
-    exerciseIcon: {
-        position: 'absolute',
-        right: '-3%',
-        top: '-5%',
-    },
-    exerciseDescription: {
-        width: '80%',
-        fontSize: 12,
-        lineHeight: 20.18,
-        bottom: 5,
-        fontWeight: '500',
-        textAlign: 'center',
-        color: '#FFF',
-        shadowColor: '#000', // Màu sắc của bóng đổ
-        shadowOffset: { width: 0, height: 4 }, // Độ lệch của bóng đổ
-        shadowOpacity: 0.25, // Độ mờ của bóng đổ
-        shadowRadius: 7, // Độ mờ của bóng đổ
-        elevation: 9, // Chỉ áp dụng cho Android
-    },
-    exerciseDescriptionInfo: {
-        width: '80%',
-        fontSize: 15,
-        lineHeight: 20.18,
-        fontWeight: '500',
-        textAlign: 'center',
-        color: '#FFF',
-        shadowColor: '#000', // Màu sắc của bóng đổ
-        shadowOffset: { width: 0, height: 4 }, // Độ lệch của bóng đổ
-        shadowOpacity: 0.25, // Độ mờ của bóng đổ
-        shadowRadius: 7, // Độ mờ của bóng đổ
-        elevation: 9, // Chỉ áp dụng cho Android
-    },
-    startButton: {
-        backgroundColor: '#28a745',
-        padding: 15,
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-    startButtonText: {
-        color: '#fff',
-        fontSize: 18,
-    },
-    btnResultContainer: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90,
-        height: 90,
-        backgroundColor: '#71A162',
-        borderRadius: 10.29,
-        margin: 10,
-    },
-    textResult: {
-        fontSize: 12,
-        lineHeight: 16,
-        color: '#FFF',
-        fontWeight: '700',
-        textAlign: 'center',
-        top: 5,
-    },
-    textNote: {
-        fontSize: 11,
-        fontWeight: '400',
-        lineHeight: 16,
-        width: 310,
-        top: 10,
-        fontStyle: 'italic',
-        textAlign: 'center',
-        color: '#FFF',
-    },
     textLogo: {
         height: 31,
         width: 116.85,
-
+        marginTop: '25%',
     },
     checkbox: {
         backgroundColor: 'transparent',
@@ -275,6 +159,37 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: '500',
         width: 314,
+    },
+    textNote: {
+        fontSize: 11,
+        fontWeight: '400',
+        lineHeight: 16,
+        width: 310,
+        top: 10,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    exerciseDescription: {
+        width: '80%',
+        fontSize: 12,
+        lineHeight: 20.18,
+        bottom: 5,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    exerciseDescriptionInfo: {
+        width: '80%',
+        fontSize: 15,
+        lineHeight: 20.18,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    error: {
+        top: '10%',
+        color: '#FFC700',
     },
 });
 

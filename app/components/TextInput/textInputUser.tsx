@@ -6,20 +6,20 @@ interface textInputUserProps {
     title: string;
     value: string;
     keyBoardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'decimal-pad' | 'visible-password';
-    placeholeder?: string;
+    placeholder?: string;
     onChangeText: (text: string) => void;
 
 
 }
 
-const TextInputUser: React.FC<textInputUserProps> = ({ title, value, keyBoardType = 'default', placeholeder, onChangeText }) => {
+const TextInputUser: React.FC<textInputUserProps> = ({ title, value, keyBoardType = 'default', placeholder, onChangeText }) => {
     return (
         <View style={{ top: 22 }}>
             <Text style={styles.textTitle}>{title}</Text>
             <TextInput
                 style={styles.textInput}
                 value={value}
-                placeholder={placeholeder}
+                placeholder={placeholder}
                 onChangeText={onChangeText}
                 keyboardType={keyBoardType}
             />
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         width: 327,
         borderRadius: 8,
         backgroundColor: '#FFF',
-        marginBottom: 10,
+        // marginBottom: 10,
     },
 })
 

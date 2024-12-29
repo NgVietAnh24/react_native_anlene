@@ -12,6 +12,8 @@ import Check from './screens/check';
 import UserInfo from './screens/user-info';
 import { RootStackParamList } from './types/type';
 import ProInfo from './screens/pro-info';
+import BuyNow from './screens/buy-now';
+import ProDetail from './screens/pro-detail';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +25,8 @@ const App: React.FC = () => {
         <Stack.Screen name="Check" component={Check} options={{ headerShown: false }} />
         <Stack.Screen name="UserInfo" component={UserInfo} options={{ headerShown: false }} />
         <Stack.Screen name="ProInfo" component={ProInfo} options={{ headerShown: false }} />
+        <Stack.Screen name="BuyNow" component={BuyNow} options={{ headerShown: false }} />
+        <Stack.Screen name="ProDetail" component={ProDetail} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
