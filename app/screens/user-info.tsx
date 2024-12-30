@@ -86,7 +86,7 @@ const UserInfo: React.FC = () => {
                 <TextInputUser title='Họ tên:*' placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
                 {name.length > 0 ? <Text></Text> : <Text style={styles.error}>{error}</Text>}
                 <TextInputUser title='Số điện thoại:*' placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
-                {name.length > 0 ? <Text></Text> : <Text style={styles.error}>{error1}</Text>}
+                {phone.length > 0 ? <Text></Text> : <Text style={styles.error}>{error1}</Text>}
                 <TextInputUser title='Email:' placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
             </View>
             <View style={{ marginBottom: '40%' }}>

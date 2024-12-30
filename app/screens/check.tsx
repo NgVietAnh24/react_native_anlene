@@ -10,48 +10,27 @@ import BtnSubmit from '../components/Button/btnSubmit';
 const Check: React.FC = () => {
     const navigation = useNavigation();
     const [isImageVisible, setIsImageVisible] = useState(false);
-    const [isBorderVisible, setIsBorderVisible] = useState(0);
+    const [isImageTrue, setIsImageTrue] = useState(require('../assets/icon-yes.png'));
+    const [isImageFalse, setIsImageFalse] = useState(require('../assets/icon-no.png'));
+    const [isBorderVisibleYes, setIsBorderVisibleYes] = useState(0);
+    const [isBorderVisibleNo, setIsBorderVisibleNo] = useState(0);
     const [isColorVisible, setIsColorVisible] = useState('');
-    const [isValue, setIsValue] = useState(0);
+    const [isCheck, setIsCheck] = useState('cơ');
     const translateX = useRef(new Animated.Value(0)).current;
 
-    const isYes = () => {
+    const isYesCo = () => {
+        setIsImageTrue(require('../assets/icon-yes-big.png'));
+        setIsBorderVisibleYes(1);
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#73A442');
-        Animated.timing(translateX, {
-            toValue: isValue + 342, // Di chuyển sang trái 300px
-            duration: 600, // Thời gian di chuyển
-            useNativeDriver: true, // Sử dụng native driver để tăng hiệu suất
-        }).start();
     }
 
-    const isNo = () => {
+    const isNoCo = () => {
+        setIsImageFalse(require('../assets/icon-no-big.png'));
+        setIsBorderVisibleNo(1);
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#C6463A');
-        Animated.timing(translateX, {
-            toValue: 0, // Trở về vị trí ban đầu
-            duration: 500,
-            useNativeDriver: true,
-        }).start();
     }
-
-
-
-    const moveToNextScreen = () => {
-        Animated.timing(translateX, {
-            toValue: -300, // Di chuyển sang trái 300px
-            duration: 500, // Thời gian di chuyển
-            useNativeDriver: true, // Sử dụng native driver để tăng hiệu suất
-        }).start();
-    };
-
-    const moveToPreviousScreen = () => {
-        Animated.timing(translateX, {
-            toValue: 0, // Trở về vị trí ban đầu
-            duration: 500,
-            useNativeDriver: true,
-        }).start();
-    };
 
     return (
         <LinearGradient
@@ -73,17 +52,36 @@ const Check: React.FC = () => {
             <Text style={styles.headerTitle}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
 
             <View style={styles.progressContainer}>
-                {[1, 2, 3, 4].map((item, index) => (
-                    <View key={item} style={styles.progressItem}>
-                        <View style={styles.progressCircle}>
-                            <Text style={styles.progressCircleText}>{item}</Text>
-                        </View>
-                        {index < 3 && <View style={styles.progressLine} />}
-                        <Text style={styles.progressLabel}>
-                            {index === 0 ? 'Cơ' : index === 1 ? 'Xương' : index === 2 ? 'Khớp' : 'Đề kháng'}
-                        </Text>
+                <View style={styles.progressItem}>
+                    <View style={styles.progressCircle}>
+                        <Image source={require('../assets/icon-default.png')} />
                     </View>
-                ))}
+                    <View style={styles.progressLine} />
+                    <Text style={styles.progressLabel}>Cơ</Text>
+                </View>
+
+                <View style={styles.progressItem}>
+                    <View style={styles.progressCircle}>
+                        <Text style={styles.progressCircleText}>2</Text>
+                    </View>
+                    <View style={styles.progressLine} />
+                    <Text style={styles.progressLabel}>Xương</Text>
+                </View>
+
+                <View style={styles.progressItem}>
+                    <View style={styles.progressCircle}>
+                        <Text style={styles.progressCircleText}>3</Text>
+                    </View>
+                    <View style={styles.progressLine} />
+                    <Text style={styles.progressLabel}>Khớp</Text>
+                </View>
+
+                <View style={styles.progressItem}>
+                    <View style={styles.progressCircle}>
+                        <Text style={styles.progressCircleText}>4</Text>
+                    </View>
+                    <Text style={styles.progressLabel}>Đề kháng</Text>
+                </View>
             </View>
 
             <Svg height="40" width="319" viewBox="0 0 319 84">
@@ -107,17 +105,15 @@ const Check: React.FC = () => {
                 </SvgText>
             </Svg>
 
-            <Animated.View
-                style={[
-                    styles.exerciseContainer,
-                    { transform: [{ translateX }] },
-                ]}
+            <View
+                style={styles.exerciseContainer}
+
             >
                 <Image source={require('../assets/bai1.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                 {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                     isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
 
-                <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                {/* <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                 {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                     isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
 
@@ -127,19 +123,19 @@ const Check: React.FC = () => {
 
                 <Image source={require('../assets/bai4.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                 {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
-                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
-            </Animated.View>
+                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)} */}
+            </View>
             <Text style={styles.exerciseDescription}>
                 Thẳng lưng trước ghế, đứng lên
                 ngồi xuống 5 lần từ 6-10 giây
             </Text>
             <View style={{ flexDirection: 'row', bottom: 10 }}>
-                <TouchableOpacity style={styles.btnResultContainer} onPress={() => isYes()}>
-                    <Image source={require('../assets/icon-yes.png')} />
+                <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesCo()}>
+                    <Image source={isImageTrue} />
                     <Text style={styles.textResult}>Được</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnResultContainer} onPress={() => moveToPreviousScreen()}>
-                    <Image source={require('../assets/icon-no.png')} />
+                <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoCo()}>
+                    <Image source={isImageFalse} />
                     <Text style={styles.textResult}>Không được</Text>
                 </TouchableOpacity>
             </View>
@@ -156,15 +152,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
+        top: '5%',
+        position: 'absolute',
         alignContent: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        marginBottom: 18,
+        // marginBottom: 18,
         paddingHorizontal: 20,
     },
     headerTitle: {
+        marginTop: '20%',
         fontSize: 16,
         fontWeight: '700',
         lineHeight: 16,
@@ -227,7 +226,6 @@ const styles = StyleSheet.create({
     exerciseContainer: {
         alignItems: 'center',
         marginBottom: 5,
-        marginLeft: '94%',
         flexDirection: 'row'
     },
     exerciseImage: {
@@ -235,10 +233,11 @@ const styles = StyleSheet.create({
         height: 317,
         resizeMode: 'cover',
         borderRadius: 10,
-        marginLeft: '70%',
     },
     exerciseIcon: {
         position: 'absolute',
+        alignContent: 'center',
+        // zIndex: 1,
         right: '-3%',
         top: '-5%',
     },
@@ -265,7 +264,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
     },
-    btnResultContainer: {
+    btnResultContainerYes: {
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -274,6 +273,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#71A162',
         borderRadius: 10.29,
         margin: 10,
+        borderColor: '#FFC200',
+        // borderWidth: 1,
+    },
+    btnResultContainerNo: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90,
+        height: 90,
+        backgroundColor: '#71A162',
+        borderRadius: 10.29,
+        margin: 10,
+        borderColor: '#FFC200',
+        // borderWidth: 1,
     },
     textResult: {
         fontSize: 12,
