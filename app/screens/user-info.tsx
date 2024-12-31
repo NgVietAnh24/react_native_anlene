@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -17,7 +17,17 @@ const UserInfo: React.FC = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [error1, setError1] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
+    const handleCancel = () => {
+        console.log('Đã nhấn Hủy');
+        setModalVisible(false);
+    };
+
+    const handleYes = () => {
+        setModalVisible(false);
+        navigation.navigate('Check');
+    };
     const submit = () => {
         if (name.length === 0) {
             setError('Vui lòng nhập họ và tên');
@@ -41,7 +51,7 @@ const UserInfo: React.FC = () => {
             end={{ x: 1, y: 1 }}
         >
             <View style={styles.header}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => setModalVisible(true)}>
                     <Image source={require('../assets/icon-back.png')} />
                 </TouchableOpacity>
                 <TextTitle title='Trang 3/6' />
@@ -104,6 +114,37 @@ const UserInfo: React.FC = () => {
             </View>
 
             <BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} color='#B8B8B8' onPress={submit} />
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>THÔNG BÁO!</Text>
+                        <Text style={styles.modalMessage}>
+                            Bạn có muốn huỷ bỏ kết quả{"\n"}
+                            kiểm tra sức khoẻ trước đó không?
+                        </Text>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.cancelButton]}
+                                onPress={handleCancel}
+                            >
+                                <Text style={styles.cancelButtonText}>HỦY</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.okButton]}
+                                onPress={handleYes}
+                            >
+                                <Text style={styles.okButtonText}>ĐỒNG Ý</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
 
         </LinearGradient>
     );
@@ -190,6 +231,82 @@ const styles = StyleSheet.create({
     error: {
         top: '10%',
         color: '#FFC700',
+    },
+    button: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 8,
+    },
+    buttonText: {
+        color: '#FFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        width: '85%',
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 10,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: '700',
+        lineHeight: 36,
+        color: '#478449',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    modalMessage: {
+        fontSize: 14,
+        color: '#555',
+        lineHeight: 18.83,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        flex: 1,
+        paddingVertical: 10,
+        marginHorizontal: 5,
+        borderRadius: 5,
+    },
+    cancelButton: {
+        backgroundColor: '#FFF',
+        borderRadius: 30,
+        borderColor: '#B70002',
+        borderWidth: 1.5,
+        // width: 140,
+    },
+    okButton: {
+        backgroundColor: '#B70002',
+        borderRadius: 30,
+    },
+    cancelButtonText: {
+        color: '#B70002',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+    okButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
     },
 });
 

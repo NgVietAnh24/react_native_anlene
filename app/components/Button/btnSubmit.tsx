@@ -5,22 +5,24 @@ interface BtnSubmitProps {
     title: string;
     textColor?: string;
     onPress: () => void;
+    disable?: boolean;
     height?: number;
     width?: number;
     radius?: number;
     color?: string;
     border?: string;
-    shadowColor?: string; // Màu bóng đổ
-    shadowOffset?: { width: number; height: number }; // Kích thước bóng đổ
-    shadowOpacity?: number; // Độ mờ bóng đổ
-    shadowRadius?: number; // Độ mờ bóng đổ
-    elevation?: number; // Độ cao bóng đổ cho Android
+    shadowColor?: string;
+    shadowOffset?: { width: number; height: number };
+    shadowOpacity?: number;
+    shadowRadius?: number;
+    elevation?: number;
 }
 
 const BtnSubmit: React.FC<BtnSubmitProps> = ({
     title,
     textColor = '#FFF',
     onPress,
+    disable = false,
     height = 50,
     width = 200,
     radius = 5,
@@ -50,7 +52,8 @@ const BtnSubmit: React.FC<BtnSubmitProps> = ({
                     elevation,
                 },
             ]}
-            onPress={onPress}
+            disabled={disable}
+            onPress={disable ? undefined : onPress}
         >
             <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
         </TouchableOpacity>

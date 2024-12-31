@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Animated, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -15,22 +15,158 @@ const Check: React.FC = () => {
     const [isBorderVisibleYes, setIsBorderVisibleYes] = useState(0);
     const [isBorderVisibleNo, setIsBorderVisibleNo] = useState(0);
     const [isColorVisible, setIsColorVisible] = useState('');
-    const [isCheck, setIsCheck] = useState('cơ');
-    const translateX = useRef(new Animated.Value(0)).current;
+    const [isCheck, setIsCheck] = useState('co');
+    const [isCheckIcon1, setIsCheckIcon1] = useState(require('../assets/icon-default.png'));
+    const [isCheckIcon2, setIsCheckIcon2] = useState(require('../assets/icon-default.png'));
+    const [isCheckIcon3, setIsCheckIcon3] = useState(require('../assets/icon-default.png'));
+    const [isCheckIcon4, setIsCheckIcon4] = useState(require('../assets/icon-default.png'));
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const handleCancel = () => {
+        console.log('Đã nhấn Hủy');
+        setModalVisible(false);
+    };
+
+    const handleResume = () => {
+        setModalVisible(false);
+        navigation.navigate('UserInfo');
+    };
+
+
+    // Cơ
     const isYesCo = () => {
         setIsImageTrue(require('../assets/icon-yes-big.png'));
         setIsBorderVisibleYes(1);
+        setIsCheckIcon1(require('../assets/icon-true.png'));
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#73A442');
+        setIsCheck('xuong');
+
+        const timer = setTimeout(() => {
+            setIsImageTrue(require('../assets/icon-yes.png'));
+            setIsBorderVisibleYes(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+
     }
 
     const isNoCo = () => {
         setIsImageFalse(require('../assets/icon-no-big.png'));
+        setIsCheckIcon1(require('../assets/icon-false.png'));
+        setIsBorderVisibleNo(1);
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#C6463A');
+        setIsCheck('xuong');
+
+        const timer = setTimeout(() => {
+            setIsImageFalse(require('../assets/icon-no.png'));
+            setIsBorderVisibleNo(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }
+
+    // Xương
+    const isYesXuong = () => {
+        setIsImageTrue(require('../assets/icon-yes-big.png'));
+        setIsBorderVisibleYes(1);
+        setIsCheckIcon2(require('../assets/icon-true.png'));
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#73A442');
+        setIsCheck('khop');
+
+        const timer = setTimeout(() => {
+            setIsImageTrue(require('../assets/icon-yes.png'));
+            setIsBorderVisibleYes(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+
+    }
+
+    const isNoXuong = () => {
+        setIsImageFalse(require('../assets/icon-no-big.png'));
+        setIsCheckIcon2(require('../assets/icon-false.png'));
+        setIsBorderVisibleNo(1);
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#C6463A');
+        setIsCheck('khop');
+
+        const timer = setTimeout(() => {
+            setIsImageFalse(require('../assets/icon-no.png'));
+            setIsBorderVisibleNo(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }
+
+    // khớp
+    const isYesKhop = () => {
+        setIsImageTrue(require('../assets/icon-yes-big.png'));
+        setIsBorderVisibleYes(1);
+        setIsCheckIcon3(require('../assets/icon-true.png'));
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#73A442');
+        setIsCheck('deKhang');
+
+        const timer = setTimeout(() => {
+            setIsImageTrue(require('../assets/icon-yes.png'));
+            setIsBorderVisibleYes(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+
+    }
+
+    const isNoKhop = () => {
+        setIsImageFalse(require('../assets/icon-no-big.png'));
+        setIsCheckIcon3(require('../assets/icon-false.png'));
+        setIsBorderVisibleNo(1);
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#C6463A');
+        setIsCheck('deKhang');
+
+        const timer = setTimeout(() => {
+            setIsImageFalse(require('../assets/icon-no.png'));
+            setIsBorderVisibleNo(0);
+            setIsImageVisible(isImageVisible);
+            setIsColorVisible('');
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }
+
+    // khớp
+    const isYesDeKhang = () => {
+        setIsImageTrue(require('../assets/icon-yes-big.png'));
+        setIsBorderVisibleYes(1);
+        setIsCheckIcon4(require('../assets/icon-true.png'));
+        setIsImageVisible(!isImageVisible);
+        setIsColorVisible('#73A442');
+    }
+
+    const isNoDeKhang = () => {
+        setIsImageFalse(require('../assets/icon-no-big.png'));
+        setIsCheckIcon4(require('../assets/icon-false.png'));
         setIsBorderVisibleNo(1);
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#C6463A');
     }
+
+
+
 
     return (
         <LinearGradient
@@ -51,95 +187,393 @@ const Check: React.FC = () => {
 
             <Text style={styles.headerTitle}>KIỂM TRA CƠ - XƯƠNG - KHỚP</Text>
 
-            <View style={styles.progressContainer}>
-                <View style={styles.progressItem}>
-                    <View style={styles.progressCircle}>
-                        <Image source={require('../assets/icon-default.png')} />
-                    </View>
-                    <View style={styles.progressLine} />
-                    <Text style={styles.progressLabel}>Cơ</Text>
-                </View>
+            {
+                (() => {
+                    switch (isCheck) {
 
-                <View style={styles.progressItem}>
-                    <View style={styles.progressCircle}>
-                        <Text style={styles.progressCircleText}>2</Text>
-                    </View>
-                    <View style={styles.progressLine} />
-                    <Text style={styles.progressLabel}>Xương</Text>
-                </View>
 
-                <View style={styles.progressItem}>
-                    <View style={styles.progressCircle}>
-                        <Text style={styles.progressCircleText}>3</Text>
-                    </View>
-                    <View style={styles.progressLine} />
-                    <Text style={styles.progressLabel}>Khớp</Text>
-                </View>
+                        case 'co':
+                            return (
+                                <>
+                                    <View style={styles.progressContainer}>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Image source={isCheckIcon1} />
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Cơ</Text>
+                                        </View>
 
-                <View style={styles.progressItem}>
-                    <View style={styles.progressCircle}>
-                        <Text style={styles.progressCircleText}>4</Text>
-                    </View>
-                    <Text style={styles.progressLabel}>Đề kháng</Text>
-                </View>
-            </View>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>2</Text>
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Xương</Text>
+                                        </View>
 
-            <Svg height="40" width="319" viewBox="0 0 319 84">
-                <Defs>
-                    <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
-                        <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
-                        <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
-                        <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
-                    </SvgLinearGradient>
-                </Defs>
-                <SvgText
-                    fill="url(#gradientText)"
-                    fontSize="40"
-                    fontWeight="700"
-                    x="25%"
-                    y="48"
-                    textAnchor="middle"
-                >
-                    KIỂM TRA CƠ
-                </SvgText>
-            </Svg>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>3</Text>
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Khớp</Text>
+                                        </View>
 
-            <View
-                style={styles.exerciseContainer}
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>4</Text>
+                                            </View>
+                                            <Text style={styles.progressLabel}>Đề kháng</Text>
+                                        </View>
+                                    </View>
 
+                                    <Svg height="40" width="319" viewBox="0 0 319 84">
+                                        <Defs>
+                                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                                <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                                            </SvgLinearGradient>
+                                        </Defs>
+                                        <SvgText
+                                            fill="url(#gradientText)"
+                                            fontSize="40"
+                                            fontWeight="700"
+                                            x="25%"
+                                            y="48"
+                                            textAnchor="middle"
+                                        >
+                                            KIỂM TRA CƠ
+                                        </SvgText>
+                                    </Svg>
+
+                                    <View
+                                        style={styles.exerciseContainer}
+
+                                    >
+                                        <Image source={require('../assets/bai1.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                                            isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+                                    </View>
+                                    <Text style={styles.exerciseDescription}>
+                                        Thẳng lưng trước ghế, đứng lên
+                                        ngồi xuống 5 lần từ 6-10 giây
+                                    </Text>
+                                    <View style={{ flexDirection: 'row', bottom: 10 }}>
+                                        <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesCo()}>
+                                            <Image source={isImageTrue} />
+                                            <Text style={styles.textResult}>Được</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoCo()}>
+                                            <Image source={isImageFalse} />
+                                            <Text style={styles.textResult}>Không được</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                </>
+                            );
+
+                        case 'xuong':
+                            return (
+
+                                <>
+                                    <View style={styles.progressContainer}>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Image source={isCheckIcon1} />
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Cơ</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon2} />
+
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Xương</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>3</Text>
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Khớp</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>4</Text>
+                                            </View>
+                                            <Text style={styles.progressLabel}>Đề kháng</Text>
+                                        </View>
+                                    </View>
+
+                                    <Svg height="40" width="319" viewBox="0 0 319 84">
+                                        <Defs>
+                                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                                <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                                            </SvgLinearGradient>
+                                        </Defs>
+                                        <SvgText
+                                            fill="url(#gradientText)"
+                                            fontSize="40"
+                                            fontWeight="700"
+                                            x="25%"
+                                            y="48"
+                                            textAnchor="middle"
+                                        >
+                                            KIỂM TRA XƯƠNG
+                                        </SvgText>
+                                    </Svg>
+
+                                    <View
+                                        style={styles.exerciseContainer}
+
+                                    >
+                                        <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                                            isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+
+                                    </View>
+                                    <Text style={styles.exerciseDescription}>
+                                        Duỗi 2 tay về phía trước, từ từ cúi xuống để chạm vào mũi bàn chân
+                                    </Text>
+                                    <View style={{ flexDirection: 'row', bottom: 10 }}>
+                                        <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesXuong()}>
+                                            <Image source={isImageTrue} />
+                                            <Text style={styles.textResult}>Được</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoXuong()}>
+                                            <Image source={isImageFalse} />
+                                            <Text style={styles.textResult}>Không được</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                </>
+                            );
+
+                        case 'khop':
+                            return (
+                                <>
+                                    <View style={styles.progressContainer}>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Image source={isCheckIcon1} />
+                                            </View>
+                                            <View style={styles.progressLine} />
+                                            <Text style={styles.progressLabel}>Cơ</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon2} />
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Xương</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon3} />
+                                            </View>
+                                            <View style={[styles.progressLine, { borderStyle: 'dashed', }]} />
+                                            <Text style={styles.progressLabel}>Khớp</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Text style={styles.progressCircleText}>4</Text>
+                                            </View>
+                                            <Text style={styles.progressLabel}>Đề kháng</Text>
+                                        </View>
+                                    </View>
+
+                                    <Svg height="40" width="319" viewBox="0 0 319 84">
+                                        <Defs>
+                                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                                <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                                            </SvgLinearGradient>
+                                        </Defs>
+                                        <SvgText
+                                            fill="url(#gradientText)"
+                                            fontSize="40"
+                                            fontWeight="700"
+                                            x="25%"
+                                            y="48"
+                                            textAnchor="middle"
+                                        >
+                                            KIỂM TRA KHỚP
+                                        </SvgText>
+                                    </Svg>
+
+                                    <View
+                                        style={styles.exerciseContainer}
+
+                                    >
+
+                                        <Image source={require('../assets/bai3.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                                            isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+                                    </View>
+                                    <Text style={styles.exerciseDescription}>
+                                        Đứng rộng chân, lưng thẳng đứng,
+                                        tay đưa ra sau và đan vào nhau
+                                    </Text>
+                                    <View style={{ flexDirection: 'row', bottom: 10 }}>
+                                        <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesKhop()}>
+                                            <Image source={isImageTrue} />
+                                            <Text style={styles.textResult}>Được</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoKhop()}>
+                                            <Image source={isImageFalse} />
+                                            <Text style={styles.textResult}>Không được</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                </>
+                            );
+
+                        case 'deKhang':
+                            return (
+                                <>
+                                    <View style={styles.progressContainer}>
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                <Image source={isCheckIcon1} />
+                                            </View>
+                                            <View style={styles.progressLine} />
+                                            <Text style={styles.progressLabel}>Cơ</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon2} />
+                                            </View>
+                                            <View style={styles.progressLine} />
+                                            <Text style={styles.progressLabel}>Xương</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon3} />
+                                            </View>
+                                            {isCheckIcon4 === require('../assets/icon-true.png') || isCheckIcon4 === require('../assets/icon-false.png') ?
+                                                (<View style={styles.progressLine} />)
+                                                :
+                                                (<View style={[styles.progressLine, { borderStyle: 'dashed', }]} />)
+                                            }
+                                            <Text style={styles.progressLabel}>Khớp</Text>
+                                        </View>
+
+                                        <View style={styles.progressItem}>
+                                            <View style={styles.progressCircle}>
+                                                < Image source={isCheckIcon4} />
+                                            </View>
+                                            <Text style={styles.progressLabel}>Đề kháng</Text>
+                                        </View>
+                                    </View>
+
+                                    <Svg height="40" width="319" viewBox="0 0 319 84">
+                                        <Defs>
+                                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                                <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                                            </SvgLinearGradient>
+                                        </Defs>
+                                        <SvgText
+                                            fill="url(#gradientText)"
+                                            fontSize="40"
+                                            fontWeight="700"
+                                            x="25%"
+                                            y="48"
+                                            textAnchor="middle"
+                                        >
+                                            KIỂM TRA ĐỀ KHÁNG
+                                        </SvgText>
+                                    </Svg>
+
+                                    <View
+                                        style={styles.exerciseContainer}
+
+                                    >
+
+                                        <Image source={require('../assets/bai4.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
+                                            isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+                                    </View>
+                                    <Text style={styles.exerciseDescription}>
+                                        6 tháng gần đây, bạn có gặp các triệu chứng: ho, sổ mũi, cảm sốt?
+                                    </Text>
+                                    <View style={{ flexDirection: 'row', bottom: 10 }}>
+                                        <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesDeKhang()}>
+                                            <Image source={isImageTrue} />
+                                            <Text style={styles.textResult}>Hiếm khi</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoDeKhang()}>
+                                            <Image source={isImageFalse} />
+                                            <Text style={styles.textResult}>Nhiều lần</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    {isCheckIcon4 === require('../assets/icon-true.png') || isCheckIcon4 === require('../assets/icon-false.png') ?
+                                        (<BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B70002' disable={false} onPress={() => setModalVisible(true)} />)
+                                        :
+                                        (<BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />)
+                                    }
+                                </>
+                            );
+                        default:
+                            return null;
+
+                    }
+
+                })()
+            }
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
             >
-                <Image source={require('../assets/bai1.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
-                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
-                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>CẢM ƠN</Text>
+                        <Text style={styles.modalMessage}>
+                            Bạn đã tham gia bài kiểm tra sức khoẻ{"\n"}
+                            Hãy tiếp tục để có thể nhận kết quả{"\n"}
+                            kiểm tra sức khoẻ của bạn.
+                        </Text>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.cancelButton]}
+                                onPress={handleCancel}
+                            >
+                                <Text style={styles.cancelButtonText}>HỦY</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.okButton]}
+                                onPress={handleResume}
+                            >
+                                <Text style={styles.okButtonText}>TIẾP TỤC</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
 
-                {/* <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
-                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
-                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
-
-                <Image source={require('../assets/bai3.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
-                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
-                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
-
-                <Image source={require('../assets/bai4.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
-                {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
-                    isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)} */}
-            </View>
-            <Text style={styles.exerciseDescription}>
-                Thẳng lưng trước ghế, đứng lên
-                ngồi xuống 5 lần từ 6-10 giây
-            </Text>
-            <View style={{ flexDirection: 'row', bottom: 10 }}>
-                <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesCo()}>
-                    <Image source={isImageTrue} />
-                    <Text style={styles.textResult}>Được</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoCo()}>
-                    <Image source={isImageFalse} />
-                    <Text style={styles.textResult}>Không được</Text>
-                </TouchableOpacity>
-            </View>
-            <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' onPress={() => navigation.navigate('UserInfo')} />
             <Text style={styles.textNote}>*Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.</Text>
         </LinearGradient>
     );
@@ -198,7 +632,6 @@ const styles = StyleSheet.create({
     progressLine: {
         width: '60%',
         borderColor: '#FFF',
-        borderStyle: 'dashed',
         borderWidth: 1.1,
         position: 'absolute',
         top: '20%',
@@ -303,7 +736,83 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         textAlign: 'center',
         color: '#FFF',
-    }
+    },
+    button: {
+        backgroundColor: '#007BFF',
+        padding: 10,
+        borderRadius: 8,
+    },
+    buttonText: {
+        color: '#FFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        width: '85%',
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 10,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: '700',
+        lineHeight: 36,
+        color: '#478449',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    modalMessage: {
+        fontSize: 14,
+        color: '#555',
+        lineHeight: 18.83,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        flex: 1,
+        paddingVertical: 10,
+        marginHorizontal: 5,
+        borderRadius: 5,
+    },
+    cancelButton: {
+        backgroundColor: '#FFF',
+        borderRadius: 30,
+        borderColor: '#B70002',
+        borderWidth: 1.5,
+        // width: 140,
+    },
+    okButton: {
+        backgroundColor: '#B70002',
+        borderRadius: 30,
+    },
+    cancelButtonText: {
+        color: '#B70002',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+    okButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
 });
 
 export default Check;
