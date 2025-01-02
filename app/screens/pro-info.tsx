@@ -2,15 +2,17 @@ import React, { useState, useRef } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 import BtnSubmit from '../components/Button/btnSubmit';
 import TextInputUser from '../components/TextInput/textInputUser';
 import { CheckBox } from 'react-native-elements';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/type';
+
+type Props = NativeStackScreenProps<RootStackParamList>;
 
 
-const ProInfo: React.FC = () => {
-    const navigation = useNavigation();
+const ProInfo: React.FC<Props> = ({ navigation }) => {
 
     const [checked, setChecked] = useState(false);
     const [seeMore, setSeeMore] = useState(false);

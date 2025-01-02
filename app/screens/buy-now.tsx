@@ -5,11 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 import BtnSubmit from '../components/Button/btnSubmit';
 import TextTitle from '../components/Text/textTitle';
-import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/type';
 
-const BuyNow: React.FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList>;
 
-    const navigation = useNavigation();
+const BuyNow: React.FC<Props> = ({ navigation }) => {
 
     return (
         <>

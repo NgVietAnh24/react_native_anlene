@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 import BtnSubmit from '../components/Button/btnSubmit';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/type';
 
+type Props = NativeStackScreenProps<RootStackParamList>;
 
-const Check: React.FC = () => {
-    const navigation = useNavigation();
+const Check: React.FC<Props> = ({ navigation }) => {
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [isImageTrue, setIsImageTrue] = useState(require('../assets/icon-yes.png'));
     const [isImageFalse, setIsImageFalse] = useState(require('../assets/icon-no.png'));

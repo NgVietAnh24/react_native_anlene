@@ -7,9 +7,13 @@ import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop }
 import BtnSubmit from '../components/Button/btnSubmit';
 import TextInputUser from '../components/TextInput/textInputUser';
 import { CheckBox } from 'react-native-elements';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/type';
 
-const UserInfo: React.FC = () => {
-    const navigation = useNavigation();
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+
+const UserInfo: React.FC<Props> = ({ navigation }) => {
 
     const [checked, setChecked] = useState(false);
     const [name, setName] = useState('');
@@ -113,7 +117,11 @@ const UserInfo: React.FC = () => {
                 </View>
             </View>
 
-            <BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} color='#B8B8B8' onPress={submit} />
+            {name.length > 0 && phone.length > 0 && email.length > 0 ?
+                (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={false} color='#B70002' onPress={submit} />)
+                :
+                (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={true} color='#B8B8B8' onPress={submit} />)}
+
 
             <Modal
                 animationType="slide"
