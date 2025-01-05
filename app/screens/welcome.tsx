@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,20 +7,29 @@ import BtnSubmit from '../components/Button/btnSubmit';
 import TextTitle from '../components/Text/textTitle';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchImageUrls } from '../slices/imageSlice';
+import { AppDispatch, RootState } from '../store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const Welcome: React.FC<Props> = ({ navigation }) => {
 
+    const dispatch = useDispatch<AppDispatch>();
+    const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
+
+    useEffect(() => {
+        dispatch(fetchImageUrls(['images/background.png', 'images/free-logo.png', 'images/minute-logo.png', 'images/voucher-logo.png', 'images/bai1.png', 'images/bai2.png', 'images/bai3.png', 'images/bai4.png']));
+    }, [dispatch]);
+
     return (
         <>
             <View style={styles.container}>
                 <Image
-                    source={require('../assets/background.png')}
+                    source={imageUrls ? { uri: imageUrls[0] } : undefined}
                     style={styles.backgroundImage}
                     resizeMode="cover"
                 />
-
                 <LinearGradient
                     colors={['rgba(14, 71, 14, 1)', 'rgba(31, 102, 13, 1)', 'rgba(32, 104, 13, 0.9)', 'rgba(35, 110, 13, 0.9)', 'rgba(39, 117, 13, 0.9)', 'rgba(46, 130, 13, 0)']}
                     style={styles.box1}
@@ -84,9 +93,15 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                     <BtnSubmit title='KIỂM TRA NGAY' onPress={() => navigation.navigate('Check')} width={230} height={46} radius={30.24} border='#FFC200' color='#B70002' />
 
                     <View style={styles.grLogo}>
-                        <Image source={require('../assets/free-logo.png')} />
-                        <Image source={require('../assets/minute-logo.png')} />
-                        <Image source={require('../assets/voucher-logo.png')} />
+                        <Image source={imageUrls ? { uri: imageUrls[1] } : undefined}
+                            style={styles.logoImage}
+                        />
+                        <Image source={imageUrls ? { uri: imageUrls[2] } : undefined}
+                            style={styles.logoImage}
+                        />
+                        <Image source={imageUrls ? { uri: imageUrls[3] } : undefined}
+                            style={styles.logoImage}
+                        />
                     </View>
 
                     <Text style={styles.textHead}>Bài kiểm tra Cơ, Xương, Khớp này được phát triển bởi đội ngũ Anlene</Text>
@@ -101,6 +116,9 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    logoImage: {
+        width: 100, height: 70
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -137,7 +155,7 @@ const styles = StyleSheet.create({
         bottom: '0%',
     },
     textHead: {
-        top: 12,
+        top: 10,
         height: 'auto',
         fontSize: 12,
         width: 320,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +9,9 @@ import TextInputUser from '../components/TextInput/textInputUser';
 import { CheckBox } from 'react-native-elements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../slices/userSlice';
+import { AppDispatch } from '../store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -22,6 +25,7 @@ const UserInfo: React.FC<Props> = ({ navigation }) => {
     const [error, setError] = useState('');
     const [error1, setError1] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleCancel = () => {
         console.log('Đã nhấn Hủy');
@@ -33,19 +37,52 @@ const UserInfo: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('Check');
     };
     const submit = () => {
-        if (name.length === 0) {
+
+
+        if (!name.trim()) {
             setError('Vui lòng nhập họ và tên');
             return;
         }
-        if (phone.length === 0) {
+        if (!phone.trim()) {
             setError1('Vui lòng nhập số điện thoại');
             return;
         }
-        setName('');
-        setPhone('');
-        setEmail('');
-        navigation.navigate('ProInfo');
-    }
+        if (!/^\d+$/.test(phone)) {
+            setError1('Số điện thoại chỉ được chứa chữ số');
+            return;
+        }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError1('');
+            setError('Email không hợp lệ');
+            return;
+        }
+
+        setError('');
+        setError1('');
+
+        // Gửi action để thêm user
+        dispatch(
+            addUser({
+                name: name.trim(),
+                phone: phone.trim(),
+                email: email.trim() || '',
+                contact: checked.toString() || '',
+            })
+        )
+            .unwrap() // Đảm bảo bắt lỗi nếu có
+            .then(() => {
+                setName('');
+                setPhone('');
+                setEmail('');
+                navigation.navigate('ProInfo');
+            })
+            .catch((error) => {
+                console.error('Lỗi khi thêm user:', error);
+            });
+    };
+
+
+
 
     return (
         <LinearGradient

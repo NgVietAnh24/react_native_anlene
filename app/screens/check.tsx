@@ -6,6 +6,8 @@ import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop }
 import BtnSubmit from '../components/Button/btnSubmit';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -16,6 +18,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
     const [isBorderVisibleYes, setIsBorderVisibleYes] = useState(0);
     const [isBorderVisibleNo, setIsBorderVisibleNo] = useState(0);
     const [isColorVisible, setIsColorVisible] = useState('');
+    const [isDisable, setIsDisable] = useState(false);
     const [isCheck, setIsCheck] = useState('co');
     const [isCheckIcon1, setIsCheckIcon1] = useState(require('../assets/icon-default.png'));
     const [isCheckIcon2, setIsCheckIcon2] = useState(require('../assets/icon-default.png'));
@@ -23,6 +26,8 @@ const Check: React.FC<Props> = ({ navigation }) => {
     const [isCheckIcon4, setIsCheckIcon4] = useState(require('../assets/icon-default.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
 
     const handleCancel = () => {
         console.log('Đã nhấn Hủy');
@@ -156,6 +161,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsCheckIcon4(require('../assets/icon-true.png'));
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#73A442');
+        setIsDisable(true);
     }
 
     const isNoDeKhang = () => {
@@ -163,6 +169,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsCheckIcon4(require('../assets/icon-false.png'));
         setIsBorderVisibleNo(1);
         setIsImageVisible(!isImageVisible);
+        setIsDisable(true);
         setIsColorVisible('#C6463A');
     }
 
@@ -254,7 +261,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                         style={styles.exerciseContainer}
 
                                     >
-                                        <Image source={require('../assets/bai1.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        <Image source={imageUrls ? { uri: imageUrls[4] } : undefined} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                                         {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                                             isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
                                     </View>
@@ -339,7 +346,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                         style={styles.exerciseContainer}
 
                                     >
-                                        <Image source={require('../assets/bai2.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        <Image source={imageUrls ? { uri: imageUrls[5] } : undefined} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                                         {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                                             isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
 
@@ -423,7 +430,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
 
                                     >
 
-                                        <Image source={require('../assets/bai3.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        <Image source={imageUrls ? { uri: imageUrls[6] } : undefined} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                                         {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                                             isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
                                     </View>
@@ -511,7 +518,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
 
                                     >
 
-                                        <Image source={require('../assets/bai4.png')} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
+                                        <Image source={imageUrls ? { uri: imageUrls[7] } : undefined} style={[styles.exerciseImage, isImageVisible && { borderWidth: 3, borderColor: isColorVisible }]} />
                                         {isColorVisible == '#73A442' ? isImageVisible && (<Image source={require('../assets/icon-true-image.png')} style={styles.exerciseIcon} />) :
                                             isImageVisible && (<Image source={require('../assets/icon-false-image.png')} style={styles.exerciseIcon} />)}
                                     </View>
@@ -519,11 +526,11 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                         6 tháng gần đây, bạn có gặp các triệu chứng: ho, sổ mũi, cảm sốt?
                                     </Text>
                                     <View style={{ flexDirection: 'row', bottom: 10 }}>
-                                        <TouchableOpacity style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesDeKhang()}>
+                                        <TouchableOpacity disabled={isDisable} style={[styles.btnResultContainerYes, { borderWidth: isBorderVisibleYes }]} onPress={() => isYesDeKhang()}>
                                             <Image source={isImageTrue} />
                                             <Text style={styles.textResult}>Hiếm khi</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoDeKhang()}>
+                                        <TouchableOpacity disabled={isDisable} style={[styles.btnResultContainerNo, , { borderWidth: isBorderVisibleNo }]} onPress={() => isNoDeKhang()}>
                                             <Image source={isImageFalse} />
                                             <Text style={styles.textResult}>Nhiều lần</Text>
                                         </TouchableOpacity>
