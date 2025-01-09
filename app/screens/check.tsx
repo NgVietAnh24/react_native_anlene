@@ -6,8 +6,9 @@ import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop }
 import BtnSubmit from '../components/Button/btnSubmit';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
+import { addResult } from '../slices/resultSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -20,12 +21,21 @@ const Check: React.FC<Props> = ({ navigation }) => {
     const [isColorVisible, setIsColorVisible] = useState('');
     const [isDisable, setIsDisable] = useState(false);
     const [isCheck, setIsCheck] = useState('co');
+    const [co, setCo] = useState('yes');
+    const [xuong, setXuong] = useState('yes');
+    const [khop, setKhop] = useState('yes');
+    const [deKhang, setDeKhang] = useState('yes');
     const [isCheckIcon1, setIsCheckIcon1] = useState(require('../assets/icon-default.png'));
     const [isCheckIcon2, setIsCheckIcon2] = useState(require('../assets/icon-default.png'));
     const [isCheckIcon3, setIsCheckIcon3] = useState(require('../assets/icon-default.png'));
     const [isCheckIcon4, setIsCheckIcon4] = useState(require('../assets/icon-default.png'));
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const userId = `user${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
 
     const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
 
@@ -35,8 +45,24 @@ const Check: React.FC<Props> = ({ navigation }) => {
     };
 
     const handleResume = () => {
+        dispatch(
+            addResult({
+                userId: userId,
+                co: co,
+                xuong: xuong,
+                khop: khop,
+                deKhang: deKhang,
+            })
+        )
+            .unwrap()
+            .then(() => {
+                navigation.navigate('UserInfo', { userId: userId });
+            })
+            .catch((error) => {
+                console.error('Lỗi khi thêm kết quả:', error);
+            });
         setModalVisible(false);
-        navigation.navigate('UserInfo');
+        // navigation.navigate('UserInfo');
     };
 
 
@@ -49,6 +75,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsColorVisible('#73A442');
         setIsCheck('xuong');
 
+
         const timer = setTimeout(() => {
             setIsImageTrue(require('../assets/icon-yes.png'));
             setIsBorderVisibleYes(0);
@@ -57,6 +84,8 @@ const Check: React.FC<Props> = ({ navigation }) => {
         }, 300);
 
         return () => clearTimeout(timer);
+
+
 
     }
 
@@ -67,6 +96,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#C6463A');
         setIsCheck('xuong');
+        setCo('no');
 
         const timer = setTimeout(() => {
             setIsImageFalse(require('../assets/icon-no.png'));
@@ -105,6 +135,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#C6463A');
         setIsCheck('khop');
+        setXuong('no');
 
         const timer = setTimeout(() => {
             setIsImageFalse(require('../assets/icon-no.png'));
@@ -143,6 +174,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsImageVisible(!isImageVisible);
         setIsColorVisible('#C6463A');
         setIsCheck('deKhang');
+        setKhop('no');
 
         const timer = setTimeout(() => {
             setIsImageFalse(require('../assets/icon-no.png'));
@@ -154,7 +186,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
         return () => clearTimeout(timer);
     }
 
-    // khớp
+    // Đề kháng 
     const isYesDeKhang = () => {
         setIsImageTrue(require('../assets/icon-yes-big.png'));
         setIsBorderVisibleYes(1);
@@ -171,7 +203,9 @@ const Check: React.FC<Props> = ({ navigation }) => {
         setIsImageVisible(!isImageVisible);
         setIsDisable(true);
         setIsColorVisible('#C6463A');
+        setDeKhang('no');
     }
+
 
 
 
@@ -279,7 +313,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                             <Text style={styles.textResult}>Không được</Text>
                                         </TouchableOpacity>
                                     </View>
-                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />
                                 </>
                             );
 
@@ -364,7 +398,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                             <Text style={styles.textResult}>Không được</Text>
                                         </TouchableOpacity>
                                     </View>
-                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />
                                 </>
                             );
 
@@ -448,7 +482,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                             <Text style={styles.textResult}>Không được</Text>
                                         </TouchableOpacity>
                                     </View>
-                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />
+                                    <BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />
                                 </>
                             );
 
@@ -538,7 +572,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
                                     {isCheckIcon4 === require('../assets/icon-true.png') || isCheckIcon4 === require('../assets/icon-false.png') ?
                                         (<BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B70002' disable={false} onPress={() => setModalVisible(true)} />)
                                         :
-                                        (<BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.navigate('UserInfo')} />)
+                                        (<BtnSubmit title='XÁC NHẬN' width={160} height={44} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />)
                                     }
                                 </>
                             );

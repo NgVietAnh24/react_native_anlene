@@ -2,7 +2,6 @@ import React, { Dispatch, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 import BtnSubmit from '../components/Button/btnSubmit';
 import TextInputUser from '../components/TextInput/textInputUser';
@@ -10,13 +9,15 @@ import { CheckBox } from 'react-native-elements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
 import { useDispatch } from 'react-redux';
+import { format } from 'date-fns';
 import { addUser } from '../slices/userSlice';
 import { AppDispatch } from '../store/store';
+import { deleteResultsByUserId } from '../slices/resultSlice';
 
-type Props = NativeStackScreenProps<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList, 'UserInfo'>;
 
 
-const UserInfo: React.FC<Props> = ({ navigation }) => {
+const UserInfo: React.FC<Props> = ({ navigation, route }) => {
 
     const [checked, setChecked] = useState(false);
     const [name, setName] = useState('');
@@ -27,18 +28,19 @@ const UserInfo: React.FC<Props> = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
+    const { userId } = route.params;
+
     const handleCancel = () => {
-        console.log('Đã nhấn Hủy');
+        console.log('Đã nhấn Hủy' + userId);
         setModalVisible(false);
     };
 
     const handleYes = () => {
         setModalVisible(false);
+        dispatch(deleteResultsByUserId(userId));
         navigation.navigate('Check');
     };
     const submit = () => {
-
-
         if (!name.trim()) {
             setError('Vui lòng nhập họ và tên');
             return;
@@ -60,16 +62,21 @@ const UserInfo: React.FC<Props> = ({ navigation }) => {
         setError('');
         setError1('');
 
-        // Gửi action để thêm user
+        const currentDate = new Date();
+        const formattedDate = format(currentDate, 'dd/MM/yyyy HH:mm:ss');
+        console.log(formattedDate);
+
         dispatch(
             addUser({
+                userId,
                 name: name.trim(),
                 phone: phone.trim(),
                 email: email.trim() || '',
                 contact: checked.toString() || '',
+                createdAt: formattedDate,
             })
         )
-            .unwrap() // Đảm bảo bắt lỗi nếu có
+            .unwrap()
             .then(() => {
                 setName('');
                 setPhone('');
@@ -80,6 +87,7 @@ const UserInfo: React.FC<Props> = ({ navigation }) => {
                 console.error('Lỗi khi thêm user:', error);
             });
     };
+
 
 
 
