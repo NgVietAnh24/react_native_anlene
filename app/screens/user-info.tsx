@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,11 +8,11 @@ import TextInputUser from '../components/TextInput/textInputUser';
 import { CheckBox } from 'react-native-elements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/type';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { addUser } from '../slices/userSlice';
-import { AppDispatch } from '../store/store';
-import { deleteResultsByUserId } from '../slices/resultSlice';
+import { AppDispatch, RootState } from '../store/store';
+import { deleteResultById } from '../slices/resultSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'UserInfo'>;
 
@@ -28,16 +28,37 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
-    const { userId } = route.params;
+    const results = useSelector((state: RootState) => state.results.data);
+
+    useEffect(() => {
+        countResults();
+    });
+
+    const countResults = () => {
+        let noCount = 0;
+
+        results.forEach(result => {
+
+            if (result.co === 'no') noCount++;
+            if (result.xuong === 'no') noCount++;
+            if (result.khop === 'no') noCount++;
+            if (result.deKhang === 'no') noCount++;
+        });
+        console.log('Hiển thị kết quả no user === ' + noCount);
+
+        return { noCount };
+    };
+
+    const { resultId } = route.params;
 
     const handleCancel = () => {
-        console.log('Đã nhấn Hủy' + userId);
+        console.log('Đã nhấn Hủy' + resultId);
         setModalVisible(false);
     };
 
     const handleYes = () => {
         setModalVisible(false);
-        dispatch(deleteResultsByUserId(userId));
+        dispatch(deleteResultById(resultId));
         navigation.navigate('Check');
     };
     const submit = () => {
@@ -68,7 +89,7 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
 
         dispatch(
             addUser({
-                userId,
+                resultId,
                 name: name.trim(),
                 phone: phone.trim(),
                 email: email.trim() || '',

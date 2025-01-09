@@ -34,10 +34,29 @@ const Check: React.FC<Props> = ({ navigation }) => {
 
     const dispatch = useDispatch<AppDispatch>();
 
-    const userId = `user${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    // const results = useSelector((state: RootState) => state.results.data);
 
 
     const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
+
+    // useEffect(() => {
+    //     countResults();
+    // });
+
+    // const countResults = () => {
+    //     let noCount = 0;
+
+    //     results.forEach(result => {
+
+    //         if (result.co === 'no') noCount++;
+    //         if (result.xuong === 'no') noCount++;
+    //         if (result.khop === 'no') noCount++;
+    //         if (result.deKhang === 'no') noCount++;
+    //     });
+    //     console.log('Hiển thị kết quả no === ' + noCount);
+
+    //     return { noCount };
+    // };
 
     const handleCancel = () => {
         console.log('Đã nhấn Hủy');
@@ -47,7 +66,6 @@ const Check: React.FC<Props> = ({ navigation }) => {
     const handleResume = () => {
         dispatch(
             addResult({
-                userId: userId,
                 co: co,
                 xuong: xuong,
                 khop: khop,
@@ -55,8 +73,8 @@ const Check: React.FC<Props> = ({ navigation }) => {
             })
         )
             .unwrap()
-            .then(() => {
-                navigation.navigate('UserInfo', { userId: userId });
+            .then((result) => {
+                navigation.navigate('UserInfo', { resultId: result.id });
             })
             .catch((error) => {
                 console.error('Lỗi khi thêm kết quả:', error);
@@ -218,7 +236,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
             end={{ x: 1, y: 1 }}
         >
             <View style={styles.header}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
                     <Image source={require('../assets/icon-back.png')} />
                 </TouchableOpacity>
                 <TextTitle title='Trang 2/6' />

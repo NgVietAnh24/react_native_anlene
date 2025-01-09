@@ -4,7 +4,6 @@ import { collection, getDocs, addDoc, deleteDoc, doc, query, where } from 'fireb
 
 interface Result {
     id: string;
-    userId: string;
     co: string;
     xuong: string;
     khop: string;
@@ -48,15 +47,11 @@ export const addResult = createAsyncThunk<Result, Omit<Result, 'id' | 'createdAt
     }
 );
 
-export const deleteResultsByUserId = createAsyncThunk<void, string>(
-    'results/deleteResultsByUserId',
-    async (userId) => {
-        const resultsQuery = query(collection(firestore, 'results'), where('userId', '==', userId));
-        const snapshot = await getDocs(resultsQuery);
-
-        // Xóa từng tài liệu
-        const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
-        await Promise.all(deletePromises); // Chờ tất cả các tài liệu được xóa
+export const deleteResultById = createAsyncThunk<void, string>(
+    'results/deleteResultById',
+    async (resultId) => {
+        const resultDoc = doc(firestore, 'results', resultId); // Lấy tài liệu theo id
+        await deleteDoc(resultDoc); // Xóa tài liệu
     }
 );
 
@@ -85,13 +80,13 @@ const resultsSlice = createSlice({
             .addCase(addResult.rejected, (state, action) => {
                 state.error = action.error.message || 'Failed to add result';
             })
-            // Delete Results by userId
-            .addCase(deleteResultsByUserId.fulfilled, (state, action) => {
-                // Xóa các kết quả khỏi state
-                state.data = state.data.filter(result => result.userId !== action.meta.arg);
+            // Delete Results by id
+            .addCase(deleteResultById.fulfilled, (state, action) => {
+                // Xóa kết quả khỏi state theo id
+                state.data = state.data.filter(result => result.id !== action.meta.arg);
             })
-            .addCase(deleteResultsByUserId.rejected, (state, action) => {
-                state.error = action.error.message || 'Failed to delete results';
+            .addCase(deleteResultById.rejected, (state, action) => {
+                state.error = action.error.message || 'Failed to delete result';
             });
     },
 });

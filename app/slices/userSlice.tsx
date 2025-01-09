@@ -37,7 +37,7 @@ export const fetchUsers = createAsyncThunk<User[], void>(
 );
 
 // Add a new user (Create)
-export const addUser = createAsyncThunk<User, Omit<User, 'id'> & { userId: string }>(
+export const addUser = createAsyncThunk<User, Omit<User, 'id'> & { resultId: string }>(
     'users/addUser ',
     async (newUser) => {
         const userWithAdditionalFields = {
@@ -49,7 +49,7 @@ export const addUser = createAsyncThunk<User, Omit<User, 'id'> & { userId: strin
         };
 
         const docRef = await addDoc(collection(firestore, 'users'), userWithAdditionalFields);
-        return { id: newUser.userId, ...userWithAdditionalFields };
+        return { id: newUser.resultId, ...userWithAdditionalFields };
     }
 );
 

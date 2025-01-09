@@ -1,7 +1,7 @@
 export type RootStackParamList = {
     Welcome: undefined;
     Check: undefined;
-    UserInfo: { userId: string };
+    UserInfo: { resultId: string };
     ProInfo: undefined;
     BuyNow: undefined;
     ProDetail: undefined;
