@@ -31,23 +31,19 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
     const results = useSelector((state: RootState) => state.results.data);
 
     useEffect(() => {
-        countResults();
+        // countResults();
     });
 
-    const countResults = () => {
-        let noCount = 0;
+    let noCount = 0;
 
-        results.forEach(result => {
+    results.forEach(result => {
 
-            if (result.co === 'no') noCount++;
-            if (result.xuong === 'no') noCount++;
-            if (result.khop === 'no') noCount++;
-            if (result.deKhang === 'no') noCount++;
-        });
-        console.log('Hiển thị kết quả no user === ' + noCount);
-
-        return { noCount };
-    };
+        if (result.co === 'no') noCount++;
+        if (result.xuong === 'no') noCount++;
+        if (result.khop === 'no') noCount++;
+        if (result.deKhang === 'no') noCount++;
+    });
+    console.log('Hiển thị kết quả no user === ' + noCount);
 
     const { resultId } = route.params;
 
@@ -62,20 +58,11 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
         navigation.navigate('Check');
     };
     const submit = () => {
-        if (!name.trim()) {
-            setError('Vui lòng nhập họ và tên');
-            return;
-        }
-        if (!phone.trim()) {
-            setError1('Vui lòng nhập số điện thoại');
-            return;
-        }
-        if (!/^\d+$/.test(phone)) {
-            setError1('Số điện thoại chỉ được chứa chữ số');
+        if (!/^\d+$/.test(phone) || phone.length < 10 || phone.length > 11) {
+            setError1('Số điện thoại chỉ được chứa 10 hoặc 11 chữ số');
             return;
         }
         if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError1('');
             setError('Email không hợp lệ');
             return;
         }
@@ -116,7 +103,12 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
     return (
         <LinearGradient
             style={styles.container}
-            colors={['rgba(14, 71, 14, 1)', 'rgb(68, 153, 45)', 'rgb(80, 164, 47)', 'rgba(19, 80, 14, 1)']}
+            colors={noCount === 0
+                ? ['rgba(14, 71, 14, 1)', 'rgb(68, 153, 45)', 'rgb(80, 164, 47)', 'rgba(19, 80, 14, 1)']
+                : noCount === 1
+                    ? ['rgba(253, 149, 0, 1)', 'rgba(254, 191, 0, 1)', 'rgba(251, 132, 2, 1)']
+                    : ['rgba(150, 150, 150, 1)', 'rgba(150, 150, 150, 1)']
+            }
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
         >
@@ -132,42 +124,100 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
 
             <Image style={styles.textLogo} source={require('../assets/text-logo.png')} />
 
-            <Text style={styles.headerTitle}>HOÀN THÀNH BÀI KIỂM TRA</Text>
+            <Text style={[styles.headerTitle, { color: noCount === 0 ? '#ECD24A' : noCount === 1 ? '#187B33' : '#DF1E13' }]}>HOÀN THÀNH BÀI KIỂM TRA</Text>
 
-            <Svg height="40" width="319" viewBox="0 0 319 84">
-                <Defs>
-                    <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
-                        <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
-                        <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
-                        <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
-                    </SvgLinearGradient>
-                </Defs>
-                <SvgText
-                    fill="url(#gradientText)"
-                    fontSize="66"
-                    fontWeight="700"
-                    x="25%"
-                    y="58"
-                    textAnchor="middle"
-                >
-                    XIN CHÚC MỪNG
-                </SvgText>
-            </Svg>
+            {noCount === 0
+                ?
+                <>
+                    <Svg height="40" width="319" viewBox="0 0 319 84">
+                        <Defs>
+                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="11" />
+                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                <Stop offset="100%" stopColor="#885021" stopOpacity="0.6" />
+                            </SvgLinearGradient>
+                        </Defs>
+                        <SvgText
+                            fill="url(#gradientText)"
+                            fontSize="66"
+                            fontWeight="700"
+                            x="25%"
+                            y="58"
+                            textAnchor="middle"
+                        >
+                            XIN CHÚC MỪNG
+                        </SvgText>
+                    </Svg>
+                    <Text style={styles.exerciseDescription}>
+                        Bạn có hệ Cơ-Xương-Khớp linh hoạt và có vẻ sức đề kháng của bạn cũng tốt.
+                    </Text>
+                </>
+                :
+                noCount === 1
+                    ?
+                    <>
+                        <Svg height="40" width="319" viewBox="0 0 319 84">
+                            <Defs>
+                                <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <Stop offset="0%" stopColor="#376E48" stopOpacity="1" />
+                                    <Stop offset="100%" stopColor="#187B33" stopOpacity="1" />
+                                </SvgLinearGradient>
+                            </Defs>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="66"
+                                fontWeight="700"
+                                x="25%"
+                                y="58"
+                                textAnchor="middle"
+                            >
+                                LƯU Ý MỘT CHÚT!
+                            </SvgText>
+                        </Svg>
+                        <Text style={styles.exerciseDescription}>
+                            Có vẻ bạn đang có hệ vận động tốt nhưng cần chú ý đến sức đề kháng hơn nhé...
+                        </Text>
+                    </>
+                    :
+                    <>
+                        <Svg height="40" width="319" viewBox="0 0 319 84">
+                            <Defs>
+                                <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <Stop offset="0%" stopColor="#DF1E13" stopOpacity="1" />
+                                    <Stop offset="100%" stopColor="#DF1E13" stopOpacity="1" />
+                                </SvgLinearGradient>
+                            </Defs>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="66"
+                                fontWeight="700"
+                                x="25%"
+                                y="58"
+                                textAnchor="middle"
+                            >
+                                LƯU Ý MỘT CHÚT!
+                            </SvgText>
+                        </Svg>
+                        <Text style={styles.exerciseDescription}>
+                            Tuy rằng có vẻ bạn đang có đề kháng tốt nhưng cần quan tâm đến hệ vận động nhiều hơn nhé,
+                            bởi sau tuổi 40,...
+                        </Text>
+                    </>
+            }
 
-            <Text style={styles.exerciseDescription}>
-                Bạn có hệ Cơ-Xương-Khớp linh hoạt và có vẻ sức đề kháng của bạn cũng tốt.
-            </Text>
+
             <Text style={styles.exerciseDescriptionInfo}>
                 Điền thông tin bên dưới để xem đầy đủ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
             </Text>
 
             <View>
-                <TextInputUser title='Họ tên:*' placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
-                {name.length > 0 ? <Text></Text> : <Text style={styles.error}>{error}</Text>}
-                <TextInputUser title='Số điện thoại:*' placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
-                {phone.length > 0 ? <Text></Text> : <Text style={styles.error}>{error1}</Text>}
-                <TextInputUser title='Email:' placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
+                <TextInputUser title='Họ tên:' color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={name.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
+                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{name.length > 0 ? '' : 'Vui lòng nhập họ và tên'}</Text>
+                <TextInputUser title='Số điện thoại:' color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={phone.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
+                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{phone.length > 0 ? error1 : 'Vui lòng nhập số điện thoại'}</Text>
+                <TextInputUser title='Email:' color={noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
+                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{email.length > 0 && error}</Text>
             </View>
             <View style={{ marginBottom: '40%' }}>
                 <View style={styles.checkBoxContainer}>
@@ -247,7 +297,6 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '700',
         lineHeight: 17.81,
-        color: '#ECD24A',
         textAlign: 'center',
         padding: 5,
     },
@@ -304,7 +353,6 @@ const styles = StyleSheet.create({
     },
     error: {
         top: '10%',
-        color: '#FFC700',
     },
     button: {
         backgroundColor: '#007BFF',

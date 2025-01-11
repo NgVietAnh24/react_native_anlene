@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -34,29 +34,7 @@ const Check: React.FC<Props> = ({ navigation }) => {
 
     const dispatch = useDispatch<AppDispatch>();
 
-    // const results = useSelector((state: RootState) => state.results.data);
-
-
     const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
-
-    // useEffect(() => {
-    //     countResults();
-    // });
-
-    // const countResults = () => {
-    //     let noCount = 0;
-
-    //     results.forEach(result => {
-
-    //         if (result.co === 'no') noCount++;
-    //         if (result.xuong === 'no') noCount++;
-    //         if (result.khop === 'no') noCount++;
-    //         if (result.deKhang === 'no') noCount++;
-    //     });
-    //     console.log('Hiển thị kết quả no === ' + noCount);
-
-    //     return { noCount };
-    // };
 
     const handleCancel = () => {
         console.log('Đã nhấn Hủy');

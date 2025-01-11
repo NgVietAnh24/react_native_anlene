@@ -19,7 +19,7 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
     const { imageUrls, loading, error } = useSelector((state: RootState) => state.images);
 
     useEffect(() => {
-        dispatch(fetchImageUrls(['images/background.png', 'images/free-logo.png', 'images/minute-logo.png', 'images/voucher-logo.png', 'images/bai1.png', 'images/bai2.png', 'images/bai3.png', 'images/bai4.png']));
+        dispatch(fetchImageUrls(['images/background.png', 'images/free-logo.png', 'images/minute-logo.png', 'images/voucher-logo.png', 'images/bai1.png', 'images/bai2.png', 'images/bai3.png', 'images/bai4.png', 'images/hop-sua.png', 'images/logo-vitamin-green.png']));
     }, [dispatch]);
 
     return (
