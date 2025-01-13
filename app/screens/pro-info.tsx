@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -31,7 +31,7 @@ const ProInfo: React.FC<Props> = ({ navigation }) => {
 
 
     return (
-        <ScrollView >
+        <ScrollView>
             <LinearGradient
                 style={styles.container}
                 colors={noCount === 0
@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        // height: '120%'
     },
     header: {
         alignContent: 'center',
@@ -379,7 +380,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        top: '3%',
+        top: '4%',
         paddingHorizontal: 20,
     },
     homeButtonText: {
@@ -529,22 +530,22 @@ const styles = StyleSheet.create({
         bottom: '7%',
         left: '5%',
     },
-    checkBoxContainer: {
-        flexDirection: 'row',
-        top: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textCheckBox: {
-        color: '#FFF',
-        lineHeight: 16,
-        fontSize: 11,
-        fontWeight: '500',
-        width: 314,
-    },
+    // checkBoxContainer: {
+    //     flexDirection: 'row',
+    //     top: '50%',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    // },
+    // textCheckBox: {
+    //     color: '#FFF',
+    //     lineHeight: 16,
+    //     fontSize: 11,
+    //     fontWeight: '500',
+    //     width: 314,
+    // },
     imagePhanTram: {
         position: 'absolute',
-        right: 20,
+        right: 30,
         bottom: 50,
     },
     grType: {
