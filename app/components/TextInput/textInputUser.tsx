@@ -30,19 +30,16 @@ const TextInputUser: React.FC<textInputUserProps> = ({ title, value, keyBoardTyp
 
 const styles = StyleSheet.create({
     textTitle: {
-        // top: 22,
         fontSize: 14,
         lineHeight: 18.83,
         fontWeight: '500',
         color: '#FFF',
-        // bottom: 40,
     },
     textInput: {
         height: 40,
         width: 327,
         borderRadius: 8,
         backgroundColor: '#FFF',
-        // marginBottom: 10,
     },
 })
 
