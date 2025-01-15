@@ -4,14 +4,16 @@ import { Text, StyleSheet } from 'react-native';
 interface TextTitleProps {
     title: string
     paddingLeft?: number,
+    color?: string,
 }
 
 const TextTitle: React.FC<TextTitleProps> = ({
+    color,
     title,
     paddingLeft = 0,
 }) => {
     return (
-        <Text style={[styles.text, { paddingLeft }]}>
+        <Text style={[styles.text, { paddingLeft, color: color }]}>
             &lt; {title} &gt;
         </Text>
     );

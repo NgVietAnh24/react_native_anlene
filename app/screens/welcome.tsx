@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -36,6 +36,8 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
             'images/hop-sua.png',
             'images/logo-vitamin-green.png',
             'images/background-tablet.png',
+            'images/Anlene-b.png',
+            'images/bg.png',
         ]));
     }, [dispatch]);
 
@@ -49,12 +51,27 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                         resizeMode="cover"
                     />
                     :
-                    <Image
-                        source={imageUrls ? { uri: imageUrls[10] } : undefined}
-                        style={isWeb ? stylesWeb.backgroundImage : isTablet ? stylesTablet.backgroundImage : styles.backgroundImage}
-                        resizeMode="cover"
+                    isTablet ?
+                        <Image
+                            source={imageUrls ? { uri: imageUrls[10] } : undefined}
+                            style={isWeb ? stylesWeb.backgroundImage : isTablet ? stylesTablet.backgroundImage : styles.backgroundImage}
+                            resizeMode="cover"
+                        />
+                        :
+                        <Image
+                            source={imageUrls ? { uri: imageUrls[12] } : undefined}
+                            style={isWeb ? stylesWeb.backgroundImage : isTablet ? stylesTablet.backgroundImage : styles.backgroundImage}
+                            resizeMode="cover"
+                        />
+                }
+                {isWeb &&
+                    <LinearGradient
+                        colors={['rgba(14, 71, 14, 1)', 'rgba(31, 102, 13, 1)', 'rgba(32, 104, 13, 1)', 'rgba(35, 110, 13, 1)', 'rgba(39, 117, 13, 0.8)', 'rgba(46, 130, 13, 0)']}
+                        style={isWeb ? stylesWeb.box1 : stylesTablet.box1}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
                     />}
-                {isWeb || isTablet &&
+                {isTablet &&
                     <LinearGradient
                         colors={['rgba(14, 71, 14, 1)', 'rgba(31, 102, 13, 1)', 'rgba(32, 104, 13, 1)', 'rgba(35, 110, 13, 1)', 'rgba(39, 117, 13, 0.8)', 'rgba(46, 130, 13, 0)']}
                         style={isWeb ? stylesWeb.box1 : stylesTablet.box1}
@@ -73,7 +90,7 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                     />}
 
                 <View style={isWeb ? stylesWeb.grTitleLogo : isTablet ? stylesTablet.grTitleLogo : styles.grTitleLogo}>
-                    <TextTitle title='Trang 1/6' paddingLeft={60} />
+                    <TextTitle color='green' title='Trang 1/6' paddingLeft={60} />
                     <Image
                         source={require('../assets/text-logo.png')}
                         style={isMobile ? { justifyContent: 'flex-end', width: 60, height: 16 } : { justifyContent: 'flex-end', width: 104, height: 28 }}
@@ -121,51 +138,92 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                         </SvgText>
                     </Svg>
                     :
-                    <Svg height="100" width="410" viewBox="0 0 319 84">
-                        <Defs>
-                            <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
-                                <Stop offset="10%" stopColor="#E8E276" stopOpacity="1" />
-                                <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
-                            </SvgLinearGradient>
-                        </Defs>
-                        <SvgText
-                            fill="url(#gradientText)"
-                            fontSize="22"
-                            fontWeight="700"
-                            x="17%"
-                            y="24"
-                            textAnchor="middle"
-                        >
-                            TẾT BẬN RỘN
-                        </SvgText>
-                        <SvgText
-                            fill="url(#gradientText)"
-                            fontSize="22"
-                            fontWeight="700"
-                            x="39%"
-                            y="55"
-                            textAnchor="middle"
-                        >
-                            CƠ-XƯƠNG-KHỚP CÓ KHỎE
-                        </SvgText>
-                        <SvgText
-                            fill="url(#gradientText)"
-                            fontSize="22"
-                            fontWeight="700"
-                            x="20%"
-                            y="84"
-                            textAnchor="middle"
-                        >
-                            ĐỂ CHU TOÀN ?
-                        </SvgText>
-                    </Svg>
+                    isTablet ?
+                        <Svg height="100" width="410" viewBox="0 0 319 84">
+                            <Defs>
+                                <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                    <Stop offset="10%" stopColor="#E8E276" stopOpacity="1" />
+                                    <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                </SvgLinearGradient>
+                            </Defs>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="17%"
+                                y="24"
+                                textAnchor="middle"
+                            >
+                                TẾT BẬN RỘN
+                            </SvgText>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="39%"
+                                y="55"
+                                textAnchor="middle"
+                            >
+                                CƠ-XƯƠNG-KHỚP CÓ KHỎE
+                            </SvgText>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="20%"
+                                y="84"
+                                textAnchor="middle"
+                            >
+                                ĐỂ CHU TOÀN ?
+                            </SvgText>
+                        </Svg>
+                        :
+                        <Svg height="100" width="910" viewBox="0 0 319 84">
+                            <Defs>
+                                <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
+                                    <Stop offset="10%" stopColor="#E8E276" stopOpacity="1" />
+                                    <Stop offset="95%" stopColor="#E1D770" stopOpacity="1" />
+                                </SvgLinearGradient>
+                            </Defs>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="17%"
+                                y="24"
+                                textAnchor="middle"
+                            >
+                                TẾT BẬN RỘN
+                            </SvgText>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="39%"
+                                y="55"
+                                textAnchor="middle"
+                            >
+                                CƠ-XƯƠNG-KHỚP CÓ KHỎE
+                            </SvgText>
+                            <SvgText
+                                fill="url(#gradientText)"
+                                fontSize="22"
+                                fontWeight="700"
+                                x="20%"
+                                y="84"
+                                textAnchor="middle"
+                            >
+                                ĐỂ CHU TOÀN ?
+                            </SvgText>
+                        </Svg>
                 }
                 <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Trăm công nghìn việc dịp cận Tết mà cơ thể nhức mỏi, làm sao chu toàn?</Text>
                 <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Ngay lúc này, hãy <Text style={isWeb ? stylesWeb.textOfHead : isTablet ? stylesTablet.textOfHead : styles.textOfHead}>Kiểm tra Sức khoẻ Cơ-Xương-Khớp  </Text>cùng Anlene để Tết này cả nhà vui khoẻ đón Tết,
                     trọn vẹn niềm vui.</Text>
 
-                <View style={isMobile ? { top: '45%', alignItems: 'center' } : isTablet ? { top: '15%', alignItems: 'flex-start' } : { top: '45%', alignItems: 'flex-start' }}>
+                <View style={isMobile ? { top: '45%', alignItems: 'center' } : isTablet ? { top: '15%', alignItems: 'flex-start' } : { top: '5%', alignItems: 'flex-start' }}>
                     <BtnSubmit title='KIỂM TRA NGAY' onPress={() => navigation.navigate('Check')} width={230} height={46} radius={30.24} border='#FFC200' color='#B70002' />
 
                     <View style={isWeb ? stylesWeb.grLogo : isTablet ? stylesTablet.grLogo : styles.grLogo}>
@@ -278,7 +336,7 @@ const stylesTablet = StyleSheet.create({
         marginBottom: '7%',
     },
     box1: {
-        width: '54%',
+        width: '40%',
         height: '100%',
         position: 'absolute',
         left: 0,
@@ -338,18 +396,15 @@ const stylesWeb = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        paddingLeft: '2.5%',
         justifyContent: 'flex-start',
-        paddingTop: 20,
     },
     backgroundImage: {
         position: 'absolute',
-        top: 0,
-        left: 0,
         right: 0,
-        bottom: 0,
-        width: '100%',
-        height: '85%',
+        width: '80%',
+        height: '100%',
     },
     grTitleLogo: {
         flexDirection: 'row',
@@ -357,56 +412,59 @@ const stylesWeb = StyleSheet.create({
         justifyContent: 'space-between',
         width: '90%',
         marginTop: 20,
+        left: '5%',
+        marginBottom: '7%',
     },
     box1: {
-        width: '100%',
-        height: 272,
+        width: '54%',
+        height: '100%',
         position: 'absolute',
-        top: '0%',
-    },
-    box2: {
-        width: '100%',
-        height: 172,
-        position: 'absolute',
-        bottom: '0%',
+        left: 0,
     },
     textHead: {
-        top: 10,
+        // top: 10,
         height: 'auto',
-        fontSize: 12,
-        width: 320,
-        lineHeight: 16.14,
-        textAlign: 'center',
-        color: '#fff',
-    },
-    textFoot: {
-        top: 10,
-        height: 'auto',
-        fontSize: 12,
-        width: 320,
-        lineHeight: 16.14,
-        textAlign: 'center',
-        color: '#fff',
-    },
-    textFoot1: {
-        top: 10,
-        height: 'auto',
-        fontWeight: '400',
-        fontSize: 13,
-        width: 464,
-        lineHeight: 18,
+        fontWeight: '500',
+        fontSize: 16,
+        width: 430,
+        lineHeight: 24,
         textAlign: 'left',
         color: '#fff',
+        // marginTop: '1%',
+    },
+    textFoot: {
+        // top: 10,
+        height: 'auto',
+        fontWeight: '400',
+        fontSize: 18,
+        width: 764,
+        fontStyle: 'italic',
+        lineHeight: 26,
+        textAlign: 'left',
+        color: '#fff',
+        // marginTop: '1%',
+    },
+    textFoot1: {
+        top: 5,
+        height: 'auto',
+        fontWeight: '400',
+        fontSize: 18,
+        width: 1170,
+        fontStyle: 'italic',
+        lineHeight: 28,
+        textAlign: 'center',
+        color: '#131E28',
         marginTop: '1%',
     },
     textOfHead: {
-        fontSize: 12,
-        lineHeight: 16,
+        fontSize: 16,
+        lineHeight: 23.29,
         textAlign: 'center',
         color: '#ECD24A',
         fontWeight: 'bold',
     },
     grLogo: {
+        right: '1%',
         flexDirection: 'row',
     },
 });

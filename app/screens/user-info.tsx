@@ -1,5 +1,5 @@
 import React, { Dispatch, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, useWindowDimensions, DevSettings } from 'react-native';
 import TextTitle from '../components/Text/textTitle';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Text as SvgText, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
@@ -18,6 +18,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'UserInfo'>;
 
 
 const UserInfo: React.FC<Props> = ({ navigation, route }) => {
+    const { width, height } = useWindowDimensions();
+
+    const isTablet = width >= 768 && width <= 1024;
+    const isWeb = width > 1024;
+    const isMobile = width < 768;
 
     const [checked, setChecked] = useState(false);
     const [name, setName] = useState('');
@@ -52,12 +57,22 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
         setModalVisible(false);
     };
 
+    const reloadApp = () => {
+        if (__DEV__) {
+            DevSettings.reload();
+        }
+    };
+
+
+
+
     const handleYes = () => {
         setModalVisible(false);
         dispatch(deleteResultById(resultId));
         navigation.navigate('Check');
     };
     const submit = () => {
+        noCount = 0;
         if (!/^\d+$/.test(phone) || phone.length < 10 || phone.length > 11) {
             setError1('Số điện thoại chỉ được chứa 10 hoặc 11 chữ số');
             return;
@@ -117,7 +132,7 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
                     <Image source={require('../assets/icon-back.png')} />
                 </TouchableOpacity>
                 <TextTitle title='Trang 3/6' />
-                <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => reloadApp()}>
                     <Image source={require('../assets/icon-home.png')} />
                 </TouchableOpacity>
             </View>
@@ -175,7 +190,7 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
                                 LƯU Ý MỘT CHÚT!
                             </SvgText>
                         </Svg>
-                        <Text style={styles.exerciseDescription}>
+                        <Text style={isMobile ? styles.exerciseDescription : stylesTablet.exerciseDescription}>
                             Có vẻ bạn đang có hệ vận động tốt nhưng cần chú ý đến sức đề kháng hơn nhé...
                         </Text>
                     </>
@@ -207,38 +222,53 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
             }
 
 
-            <Text style={styles.exerciseDescriptionInfo}>
+            <Text style={isMobile ? styles.exerciseDescriptionInfo : stylesTablet.exerciseDescriptionInfo}>
                 Điền thông tin bên dưới để xem đầy đủ kết quả và nhận ngay Voucher ưu đãi lên đến 100.000đ từ Anlene.
             </Text>
 
             <View>
-                <TextInputUser title='Họ tên:' color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={name.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
+                <TextInputUser title='Họ tên:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={name.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
                 <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{name.length > 0 ? '' : 'Vui lòng nhập họ và tên'}</Text>
-                <TextInputUser title='Số điện thoại:' color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={phone.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
+                <TextInputUser title='Số điện thoại:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={phone.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
                 <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{phone.length > 0 ? error1 : 'Vui lòng nhập số điện thoại'}</Text>
-                <TextInputUser title='Email:' color={noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
+                <TextInputUser title='Email:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
                 <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{email.length > 0 && error}</Text>
             </View>
-            <View style={{ marginBottom: '40%' }}>
-                <View style={styles.checkBoxContainer}>
+            <View style={{ marginBottom: '30%' }}>
+                <View style={isMobile ? styles.checkBoxContainer : stylesTablet.checkBoxContainer}>
                     <CheckBox
                         checked={checked}
                         onPress={() => setChecked(!checked)}
-                        containerStyle={styles.checkbox}
+                        containerStyle={isMobile ? styles.checkbox : stylesTablet.checkbox}
                     />
-                    <Text style={styles.textCheckBox}>Tôi đồng ý để Anlene Vietnam liên hệ trong bất kỳ chương trình quảng cáo sản phẩm hay khuyến mãi nào</Text>
+                    <Text style={isMobile ? styles.textCheckBox : stylesTablet.textCheckBox}>Tôi đồng ý để Anlene Vietnam liên hệ trong bất kỳ chương trình quảng cáo sản phẩm hay khuyến mãi nào</Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.textNote}>*Lưu ý: Hãy dừng bài tập ngay nếu cảm thấy không thoải mái. Đảm bảo vị trí tập an toàn để không té ngã.</Text>
+                    <Text style={isMobile ? styles.textNote : stylesTablet.textNote}>Bằng cách điền bảng thông tin này, tôi đồng ý với việc thông tin của mình để xử lý dựa trên chính sách bảo mật của Anlene</Text>
                 </View>
             </View>
 
-            {name.length > 0 && phone.length > 0 && email.length > 0 ?
-                (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={false} color='#B70002' onPress={submit} />)
+            {isMobile ?
+                name.length > 0 && phone.length > 0 && email.length > 0 ?
+                    (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={false} color='#B70002' onPress={submit} />)
+                    :
+                    (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={true} color='#B8B8B8' onPress={submit} />)
                 :
-                (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={true} color='#B8B8B8' onPress={submit} />)}
-
-
+                name.length > 0 && phone.length > 0 && email.length > 0 ?
+                    (
+                        <View style={{ bottom: '30%', flexDirection: 'row' }}>
+                            <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
+                            <View style={{ width: '4%' }} />
+                            <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={false} color='#B70002' onPress={submit} />
+                        </View>
+                    )
+                    :
+                    (<View style={{ bottom: '30%', flexDirection: 'row' }}>
+                        <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
+                        <View style={{ width: '4%' }} />
+                        <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={true} color='#B8B8B8' onPress={submit} />
+                    </View>)
+            }
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -246,7 +276,7 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
+                    <View style={isMobile ? styles.modalContent : stylesTablet.modalContent}>
                         <Text style={styles.modalTitle}>THÔNG BÁO!</Text>
                         <Text style={styles.modalMessage}>
                             Bạn có muốn huỷ bỏ kết quả{"\n"}
@@ -410,7 +440,6 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         borderColor: '#B70002',
         borderWidth: 1.5,
-        // width: 140,
     },
     okButton: {
         backgroundColor: '#B70002',
@@ -429,6 +458,63 @@ const styles = StyleSheet.create({
         lineHeight: 21.92,
         fontWeight: '700',
         textAlign: 'center',
+    },
+});
+
+const stylesTablet = StyleSheet.create({
+    exerciseDescription: {
+        width: 622,
+        fontSize: 12,
+        lineHeight: 20.18,
+        bottom: 5,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    exerciseDescriptionInfo: {
+        width: '50%',
+        fontSize: 15,
+        lineHeight: 20.18,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    checkBoxContainer: {
+        flexDirection: 'row',
+        top: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textCheckBox: {
+        color: '#FFF',
+        lineHeight: 20.18,
+        fontSize: 15,
+        fontWeight: '500',
+        width: 660,
+    },
+    checkbox: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        bottom: '19%',
+        left: '3%',
+    },
+    textNote: {
+        fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 18,
+        width: 660,
+        top: '40%',
+        fontStyle: 'italic',
+        color: '#FFF',
+        left: '4%',
+    },
+    modalContent: {
+        width: 420,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 10,
     },
 });
 
