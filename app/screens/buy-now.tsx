@@ -45,7 +45,7 @@ const BuyNow: React.FC<Props> = ({ navigation }) => {
                         resizeMode="cover"
                     />}
 
-                {isWeb || isTablet &&
+                {isTablet &&
                     <LinearGradient
                         colors={['rgba(14, 71, 14, 1)', 'rgba(31, 102, 13, 1)', 'rgba(32, 104, 13, 1)', 'rgba(35, 110, 13, 1)', 'rgba(39, 117, 13, 0.8)', 'rgba(46, 130, 13, 0)']}
                         style={isWeb ? stylesWeb.box1 : stylesTablet.box1}

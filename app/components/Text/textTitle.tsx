@@ -5,15 +5,17 @@ interface TextTitleProps {
     title: string
     paddingLeft?: number,
     color?: string,
+    width?: number,
 }
 
 const TextTitle: React.FC<TextTitleProps> = ({
-    color,
+    width,
+    color = '#FFF',
     title,
     paddingLeft = 0,
 }) => {
     return (
-        <Text style={[styles.text, { paddingLeft, color: color }]}>
+        <Text style={[styles.text, { paddingLeft, color: color, width: width }]}>
             &lt; {title} &gt;
         </Text>
     );

@@ -128,16 +128,22 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
             end={{ x: 1, y: 1 }}
         >
             <View style={styles.header}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setModalVisible(true)}>
-                    <Image source={require('../assets/icon-back.png')} />
-                </TouchableOpacity>
-                <TextTitle title='Trang 3/6' />
-                <TouchableOpacity activeOpacity={0.7} onPress={() => reloadApp()}>
+                {isMobile &&
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setModalVisible(true)}>
+                        <Image source={require('../assets/icon-back.png')} />
+                    </TouchableOpacity>}
+                {isTablet &&
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setModalVisible(true)}>
+                        <Image source={require('../assets/icon-back.png')} />
+                    </TouchableOpacity>}
+                <TextTitle color='#FFF' title='Trang 3/6' />
+                <TouchableOpacity style={isWeb && { alignItems: 'center', right: '-450%', position: 'absolute' }} activeOpacity={0.7} onPress={() => reloadApp()}>
                     <Image source={require('../assets/icon-home.png')} />
+                    {isWeb && <Text style={{ color: '#FFF' }}>Trang chủ</Text>}
                 </TouchableOpacity>
             </View>
 
-            <Image style={styles.textLogo} source={require('../assets/text-logo.png')} />
+            <Image style={isMobile ? styles.textLogo : isTablet ? styles.textLogo : stylesWeb.textLogo} source={require('../assets/text-logo.png')} />
 
             <Text style={[styles.headerTitle, { color: noCount === 0 ? '#ECD24A' : noCount === 1 ? '#187B33' : '#DF1E13' }]}>HOÀN THÀNH BÀI KIỂM TRA</Text>
 
@@ -254,20 +260,36 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
                     :
                     (<BtnSubmit title='HOÀN THÀNH' width={160} height={44} radius={24} disable={true} color='#B8B8B8' onPress={submit} />)
                 :
-                name.length > 0 && phone.length > 0 && email.length > 0 ?
-                    (
-                        <View style={{ bottom: '30%', flexDirection: 'row' }}>
+                isTablet ?
+                    name.length > 0 && phone.length > 0 && email.length > 0 ?
+                        (
+                            <View style={{ bottom: '30%', flexDirection: 'row' }}>
+                                <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
+                                <View style={{ width: '4%' }} />
+                                <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={false} color='#B70002' onPress={submit} />
+                            </View>
+                        )
+                        :
+                        (<View style={{ bottom: '30%', flexDirection: 'row' }}>
                             <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
                             <View style={{ width: '4%' }} />
-                            <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={false} color='#B70002' onPress={submit} />
-                        </View>
-                    )
+                            <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={true} color='#B8B8B8' onPress={submit} />
+                        </View>)
                     :
-                    (<View style={{ bottom: '30%', flexDirection: 'row' }}>
-                        <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
-                        <View style={{ width: '4%' }} />
-                        <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={true} color='#B8B8B8' onPress={submit} />
-                    </View>)
+                    name.length > 0 && phone.length > 0 && email.length > 0 ?
+                        (
+                            <View style={{ bottom: '60%', flexDirection: 'row' }}>
+                                <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
+                                <View style={{ width: '4%' }} />
+                                <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={false} color='#B70002' onPress={submit} />
+                            </View>
+                        )
+                        :
+                        (<View style={{ bottom: '60%', flexDirection: 'row' }}>
+                            <BtnSubmit title='TRỞ VỀ' width={220} height={52} radius={24} disable={false} textColor='#73A442' border='#73A442' color='#FFF' onPress={() => setModalVisible(true)} />
+                            <View style={{ width: '4%' }} />
+                            <BtnSubmit title='HOÀN THÀNH' width={220} height={52} radius={24} disable={true} color='#B8B8B8' onPress={submit} />
+                        </View>)
             }
             <Modal
                 animationType="slide"
@@ -515,6 +537,69 @@ const stylesTablet = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         elevation: 10,
+    },
+});
+
+const stylesWeb = StyleSheet.create({
+    exerciseDescription: {
+        width: 622,
+        fontSize: 12,
+        lineHeight: 20.18,
+        bottom: 5,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    exerciseDescriptionInfo: {
+        width: '50%',
+        fontSize: 15,
+        lineHeight: 20.18,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#FFF',
+    },
+    checkBoxContainer: {
+        flexDirection: 'row',
+        top: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textCheckBox: {
+        color: '#FFF',
+        lineHeight: 20.18,
+        fontSize: 15,
+        fontWeight: '500',
+        width: 660,
+    },
+    checkbox: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        bottom: '19%',
+        left: '3%',
+    },
+    textNote: {
+        fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 18,
+        width: 660,
+        top: '40%',
+        fontStyle: 'italic',
+        color: '#FFF',
+        left: '4%',
+    },
+    modalContent: {
+        width: 420,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 10,
+    },
+    textLogo: {
+        height: 31,
+        width: 116.85,
+        marginTop: '25%',
+        marginRight: '80%'
     },
 });
 

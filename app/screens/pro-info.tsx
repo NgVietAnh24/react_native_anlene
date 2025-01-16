@@ -64,7 +64,7 @@ const ProInfo: React.FC<Props> = ({ navigation }) => {
                         <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
                             <Image source={require('../assets/icon-back.png')} />
                         </TouchableOpacity>
-                        <TextTitle title='Trang 4/6' />
+                        <TextTitle color='#FFF' title='Trang 4/6' />
                         <TouchableOpacity activeOpacity={0.7} onPress={() => reloadApp()}>
                             <Image source={require('../assets/icon-home.png')} />
                         </TouchableOpacity>
@@ -407,7 +407,7 @@ const ProInfo: React.FC<Props> = ({ navigation }) => {
                         <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
                             <Image source={require('../assets/icon-back.png')} />
                         </TouchableOpacity>
-                        <TextTitle title='Trang 4/6' />
+                        <TextTitle color='#FFF' title='Trang 4/6' />
                         <TouchableOpacity activeOpacity={0.7} onPress={() => reloadApp()}>
                             <Image source={require('../assets/icon-home.png')} />
                         </TouchableOpacity>

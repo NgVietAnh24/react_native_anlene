@@ -179,7 +179,7 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                             </SvgText>
                         </Svg>
                         :
-                        <Svg height="100" width="910" viewBox="0 0 319 84">
+                        <Svg height="100" width="910" viewBox="0 0 319 84" style={stylesWeb.svg}>
                             <Defs>
                                 <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <Stop offset="0%" stopColor="#BA872C" stopOpacity="0.6" />
@@ -201,7 +201,7 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                                 fill="url(#gradientText)"
                                 fontSize="22"
                                 fontWeight="700"
-                                x="39%"
+                                x="41%"
                                 y="55"
                                 textAnchor="middle"
                             >
@@ -219,9 +219,12 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                             </SvgText>
                         </Svg>
                 }
-                <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Trăm công nghìn việc dịp cận Tết mà cơ thể nhức mỏi, làm sao chu toàn?</Text>
-                <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Ngay lúc này, hãy <Text style={isWeb ? stylesWeb.textOfHead : isTablet ? stylesTablet.textOfHead : styles.textOfHead}>Kiểm tra Sức khoẻ Cơ-Xương-Khớp  </Text>cùng Anlene để Tết này cả nhà vui khoẻ đón Tết,
-                    trọn vẹn niềm vui.</Text>
+                <View style={isWeb && { marginTop: '7%' }}>
+                    <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Trăm công nghìn việc dịp cận Tết mà cơ thể nhức mỏi, làm sao chu toàn?</Text>
+                    <Text style={isWeb ? stylesWeb.textHead : isTablet ? stylesTablet.textHead : styles.textHead}>Ngay lúc này, hãy <Text style={isWeb ? stylesWeb.textOfHead : isTablet ? stylesTablet.textOfHead : styles.textOfHead}>Kiểm tra Sức khoẻ Cơ-Xương-Khớp  </Text>cùng Anlene để Tết này cả nhà vui khoẻ đón Tết,
+                        trọn vẹn niềm vui.</Text>
+                </View>
+
 
                 <View style={isMobile ? { top: '45%', alignItems: 'center' } : isTablet ? { top: '15%', alignItems: 'flex-start' } : { top: '5%', alignItems: 'flex-start' }}>
                     <BtnSubmit title='KIỂM TRA NGAY' onPress={() => navigation.navigate('Check')} width={230} height={46} radius={30.24} border='#FFC200' color='#B70002' />
@@ -238,8 +241,11 @@ const Welcome: React.FC<Props> = ({ navigation }) => {
                         />
                     </View>
 
+
                     <Text style={isWeb ? stylesWeb.textFoot : isTablet ? stylesTablet.textFoot : styles.textHead}>Bài kiểm tra Cơ, Xương, Khớp này được phát triển bởi đội ngũ Anlene</Text>
                     <Text style={isWeb ? stylesWeb.textFoot1 : isTablet ? stylesTablet.textFoot1 : styles.textHead}>Lưu ý: Bài kiểm tra không dành cho đối tượng đang bị chấn thương hoặc có bệnh lý về cơ, xương, khớp hoặc tiểu đường</Text>
+
+
 
                 </View>
 
@@ -393,6 +399,13 @@ const stylesWeb = StyleSheet.create({
     logoImage: {
         width: 100, height: 70
     },
+    svg: {
+        position: 'absolute',
+        top: '19%',
+        left: '-16.25%',
+        right: 0,
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -422,7 +435,6 @@ const stylesWeb = StyleSheet.create({
         left: 0,
     },
     textHead: {
-        // top: 10,
         height: 'auto',
         fontWeight: '500',
         fontSize: 16,
@@ -430,7 +442,6 @@ const stylesWeb = StyleSheet.create({
         lineHeight: 24,
         textAlign: 'left',
         color: '#fff',
-        // marginTop: '1%',
     },
     textFoot: {
         // top: 10,

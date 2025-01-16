@@ -690,16 +690,26 @@ const Check: React.FC<Props> = ({ navigation }) => {
                 </>
                 :
                 <>
-                    <View style={styles.header}>
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
-                            <Image source={require('../assets/icon-back.png')} />
-                        </TouchableOpacity>
-                        <TextTitle title='Trang 2/6' />
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
+                    <View style={isTablet ? stylesTablet.header : stylesWeb.header}>
+                        {isTablet ?
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
+                                <Image source={require('../assets/icon-back.png')} />
+                            </TouchableOpacity>
+                            :
+                            <Image style={stylesWeb.imageLogo} source={require('../assets/text-logo.png')} />
+                        }
+
+                        <TextTitle color='#FFF' title='Trang 2/6' />
+
+
+
+                        <TouchableOpacity style={isWeb && { marginLeft: '170%', alignItems: 'center' }} activeOpacity={0.7} onPress={() => navigation.navigate('Welcome')}>
                             <Image source={require('../assets/icon-home.png')} />
+                            {isWeb && <Text style={{ color: '#FFF', fontSize: 9, }}> Trang chủ</Text>}
                         </TouchableOpacity>
                     </View>
-                    <Image style={stylesTablet.imageLogo} source={require('../assets/text-logo.png')} />
+                    {isTablet &&
+                        <Image style={stylesTablet.imageLogo} source={require('../assets/text-logo.png')} />}
                     <Svg height="60" width="353" viewBox="0 0 319 84">
                         <Defs>
                             <SvgLinearGradient id="gradientText" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -850,9 +860,9 @@ const Check: React.FC<Props> = ({ navigation }) => {
 
                     </View>
                     {isDisableTablet === true && isDisableTablet1 === true && isDisableTablet2 === true && isDisableTablet3 === true ?
-                        (<BtnSubmit title='XÁC NHẬN' width={220} height={52} radius={24} color='#B70002' disable={false} onPress={() => setModalVisible(true)} />)
+                        (<BtnSubmit title='XÁC NHẬN' width={isTablet ? 220 : 120} height={isTablet ? 52 : 32} radius={24} color='#B70002' disable={false} onPress={() => setModalVisible(true)} />)
                         :
-                        (<BtnSubmit title='XÁC NHẬN' width={220} height={52} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />)
+                        (<BtnSubmit title='XÁC NHẬN' width={isTablet ? 220 : 120} height={isTablet ? 52 : 32} radius={24} color='#B8B8B8' disable={true} onPress={() => navigation.goBack()} />)
                     }
                 </>
 
@@ -1164,12 +1174,192 @@ const stylesTablet = StyleSheet.create({
     container: {
         flexDirection: 'row',
     },
+    header: {
+        top: '5%',
+        position: 'absolute',
+        alignContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        paddingHorizontal: 20,
+    },
     grContainer: {
         alignItems: 'center',
         padding: '1%',
     },
     imageLogo: {
         marginTop: '5%',
+        width: 132,
+        height: 36,
+    },
+    textBody: {
+        color: '#FFF',
+        fontWeight: '400',
+        fontSize: 18,
+        lineHeight: 25,
+    },
+    exerciseContainer: {
+        alignItems: 'center'
+    },
+    textTitle: {
+        paddingTop: 3,
+        fontSize: 15,
+        fontWeight: '700',
+        lineHeight: 15,
+        textAlign: 'center',
+        color: '#FFF'
+    },
+    exerciseImage: {
+        width: 225,
+        height: 230,
+        top: '4%',
+        borderRadius: 12,
+    },
+    exerciseDescription: {
+        fontSize: 13,
+        lineHeight: 18,
+        fontWeight: '400',
+        color: '#FFF',
+        width: 225,
+        textAlign: 'center',
+        top: '5%',
+        height: '14%',
+    },
+    btnResultContainerYes: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 72,
+        height: 72,
+        backgroundColor: '#71A162',
+        borderRadius: 12,
+        margin: 10,
+        borderColor: '#FFC200',
+    },
+    btnResultContainerNo: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 72,
+        height: 72,
+        backgroundColor: '#71A162',
+        borderRadius: 12,
+        margin: 10,
+        borderColor: '#FFC200',
+    },
+    textResult: {
+        fontSize: 10.19,
+        lineHeight: 13.59,
+        color: '#FFF',
+        fontWeight: '700',
+        textAlign: 'center',
+        top: 5,
+    },
+    textNote: {
+        fontSize: 14,
+        fontWeight: '400',
+        lineHeight: 18,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        color: '#FFF',
+        top: '1%'
+    },
+    exerciseIcon: {
+        position: 'absolute',
+        alignContent: 'center',
+        right: '-5%',
+        top: '6%',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        width: 432,
+        height: 255,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 10,
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: '700',
+        lineHeight: 36,
+        color: '#478449',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    modalMessage: {
+        fontSize: 14,
+        color: '#555',
+        lineHeight: 18.83,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: 40,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        flex: 1,
+        paddingVertical: 10,
+        marginHorizontal: 5,
+        borderRadius: 5,
+    },
+    cancelButton: {
+        backgroundColor: '#FFF',
+        borderRadius: 30,
+        borderColor: '#B70002',
+        borderWidth: 1.5,
+    },
+    okButton: {
+        backgroundColor: '#B70002',
+        borderRadius: 30,
+    },
+    cancelButtonText: {
+        color: '#B70002',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+    okButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+        lineHeight: 21.92,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+});
+
+const stylesWeb = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+    },
+    header: {
+        top: '5%',
+        position: 'absolute',
+        alignContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        paddingHorizontal: 20,
+    },
+    grContainer: {
+        alignItems: 'center',
+        padding: '1%',
+    },
+
+    imageLogo: {
+        marginRight: '170%',
         width: 132,
         height: 36,
     },
