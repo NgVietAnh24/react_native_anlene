@@ -35,12 +35,14 @@ const styles = StyleSheet.create({
         lineHeight: 18.83,
         fontWeight: '500',
         color: '#FFF',
+        paddingBottom: '1%',
     },
     textInput: {
         height: 40,
         borderRadius: 8,
         backgroundColor: '#FFF',
         paddingHorizontal: '1%',
+        // bottom: '1%',
     },
 })
 

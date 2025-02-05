@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 5,
         borderColor: '#FFC200',
-        bottom: 10,
+        bottom: '5%',
     },
     buttonText: {
         fontSize: 20,

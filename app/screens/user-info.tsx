@@ -234,11 +234,11 @@ const UserInfo: React.FC<Props> = ({ navigation, route }) => {
 
             <View>
                 <TextInputUser title='Họ tên:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={name.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập họ và tên' value={name} keyBoardType='default' onChangeText={setName} />
-                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{name.length > 0 ? '' : 'Vui lòng nhập họ và tên'}</Text>
+                <Text style={[isMobile ? styles.error : stylesTablet.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{name.length > 0 ? '' : 'Vui lòng nhập họ và tên'}</Text>
                 <TextInputUser title='Số điện thoại:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} borderColor={phone.trim() ? '' : noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập số điện thoại' value={phone} keyBoardType='numeric' onChangeText={setPhone} />
-                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{phone.length > 0 ? error1 : 'Vui lòng nhập số điện thoại'}</Text>
+                <Text style={[isMobile ? styles.error : stylesTablet.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{phone.length > 0 ? error1 : 'Vui lòng nhập số điện thoại'}</Text>
                 <TextInputUser title='Email:' width={isMobile ? 327 : 660} color={noCount === 1 ? '#376E48' : '#ECD24A'} placeholder='Nhập email' value={email} keyBoardType='email-address' onChangeText={setEmail} />
-                <Text style={[styles.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{email.length > 0 && error}</Text>
+                <Text style={[isMobile ? styles.error : stylesTablet.error, { color: noCount === 1 ? '#376E48' : '#ECD24A' }]}>{email.length > 0 && error}</Text>
             </View>
             <View style={{ marginBottom: '30%' }}>
                 <View style={isMobile ? styles.checkBoxContainer : stylesTablet.checkBoxContainer}>
@@ -365,9 +365,9 @@ const styles = StyleSheet.create({
     },
     checkBoxContainer: {
         flexDirection: 'row',
-        top: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        bottom: '14%',
     },
     textCheckBox: {
         color: '#FFF',
@@ -381,9 +381,9 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 16,
         width: 310,
-        top: 10,
         fontStyle: 'italic',
         textAlign: 'center',
+        bottom: '30%',
         color: '#FFF',
     },
     exerciseDescription: {
@@ -404,7 +404,9 @@ const styles = StyleSheet.create({
         color: '#FFF',
     },
     error: {
-        top: '10%',
+        top: '9%',
+        right: '-1%',
+        marginBottom: '4%',
     },
     button: {
         backgroundColor: '#007BFF',
@@ -492,6 +494,10 @@ const stylesTablet = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
         color: '#FFF',
+    },
+    error: {
+        top: '9%',
+        marginBottom: '2%',
     },
     exerciseDescriptionInfo: {
         width: '50%',
